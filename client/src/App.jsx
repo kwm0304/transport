@@ -1,34 +1,58 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+//components
+import Calendar from './components/Calendar'
+import Nav from './components/Nav'
+import Login from './components/Login'
+import Signup from './components/Singup'
+import EventModal from './components/EventModal'
+import Dashboard from './components/Dashboard'
+import Finances from './components/Finances'
+import NoMatch from './components/NoMatch'
+//imports
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import Modal from 'react-modal'
+Modal.setAppElement('#root')
+
+import { useAuthContext } from './hooks/useAuth'
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  const { user } = useAuthContext()
   return (
-    <>
+    <Router>
+      <Nav />
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <Routes>
+          <Route
+          path='/'
+          element={user ? <Dashboard /> : <Navigate to='/login' />}
+          />
+          <Route
+          path='/login'
+          element={!user ? <Login /> : <Navigate to='/' />}
+          />
+          <Route
+          path='/signup'
+          element={!user ? <Signup /> : <Navigate to='/' />}
+          />
+          <Route
+          path='/calendar'
+          element={<Calendar />}
+          />
+          <Route
+          path='/modal'
+          elememnt={<EventModal />}
+          />
+          <Route
+          path='/finances'
+          element={<Finances />}
+          />
+          <Route 
+          path='/*'
+          element={<NoMatch />}
+          />
+        </Routes>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </Router>
   )
 }
 

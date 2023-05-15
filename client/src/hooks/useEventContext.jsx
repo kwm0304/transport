@@ -1,7 +1,7 @@
-import { EventContext } from '../context/EventContex'
+import { EventContext } from '../context/EventContext'
 import { useContext } from 'react'
 
-export const useWorkoutContext = () => {
+export const useEventContext = () => {
   const context = useContext(EventContext)
   if (!context) {
     throw Error('useEventContext must be inside EventContextProvider')

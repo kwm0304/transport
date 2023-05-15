@@ -1,38 +1,21 @@
 import { useState } from 'react'
-import { useMutation } from '@apollo/client'
 import { Link } from 'react-router-dom'
-import { LOGIN } from '../utils/mutations'
-import Auth from '../utils/auth'
+import { useLogin } from '../hooks/useLogin'
 
 function Login ()  {
-  const [formState, setFormState] = useState({ email: '', password: ''})
-  const [login, { error }] = useMutation(LOGIN)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const {login, error, isLoading} = useLogin()
 
-  const handleFormSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const mutationResponse = await login ({
-        variables: { email: formState.email, password: formState.password },
-      })
-      const token = mutationResponse.data.login.token;
-      Auth.login(token)
-    } catch (e) {
-      console.log(e)
-    }
-  }
-
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormState({
-      ...formState,
-      [name]: value
-    })
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    await login(email, password)
   }
   return (
     <div className='container my-1 '>
       <Link to='/signup' className='text-blue-950 ml-2 font-semibold '>Go to Signup </Link>
       <h2 className='text-blue-900 font-bold uppercase text-center mb-12 mt-24 text-2xl'>Login</h2>
-      <form onSubmit={handleFormSubmit}>
+      <form onSubmit={handleSubmit}>
         <div className="flex flex-cols-2 justify-center my-2 mx-12">
           <label htmlFor='email' className=' w-20'>Email</label>
           <input
@@ -40,7 +23,8 @@ function Login ()  {
           name='email'
           type='email'
           id ='email'
-          onChange={handleChange}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           className='rounded-lg mx-2 text-center border border-gray-950 w-48'
           />
         </div>
@@ -51,17 +35,18 @@ function Login ()  {
           name='password'
           type='password'
           id='pwd'
-          onChange={handleChange}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           className='rounded-lg mx-2 text-center border border-gray-950 w-48'
           />
         </div>
         {error ? (
           <div>
-            <p className='error-text'>The provided credentials are incorrect</p>
+            <p className='error-text'>{error}</p>
           </div>
         ) : null }
         <div className='grid justify-items-center pt-12'>
-          <button type='submit' className='rounded-lg bg-blue-900 text-white  px-2 py-1 w-36 shadow-xl'>Submit</button>
+          <button type='submit' disabled={isLoading} className='rounded-lg bg-blue-900 text-white  px-2 py-1 w-36 shadow-xl'>Login</button>
         </div>
       </form>
     </div>

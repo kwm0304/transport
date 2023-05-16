@@ -8,6 +8,7 @@ import EventModal from './components/EventModal'
 import Dashboard from './components/Dashboard'
 import Finances from './components/Finances'
 import NoMatch from './components/NoMatch'
+import StartOfDay from './components/StartOfDay'
 //imports
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import Modal from 'react-modal'
@@ -46,6 +47,10 @@ function App() {
           path='/finances'
           element={<Finances />}
           />
+          <Route
+          path='/sod'
+          element={<StartOfDay />}  
+          />        
           <Route 
           path='/*'
           element={<NoMatch />}

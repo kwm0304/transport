@@ -7,6 +7,9 @@ const Signup = () => {
   const [password, setPassword] = useState('')
   const {signup, error, isLoading} = useSignup()
 
+  console.log('email', email)
+  console.log('password', password)
+  
   const handleSubmit = async (e) => {
     e.preventDefault()
     await signup(email, password)

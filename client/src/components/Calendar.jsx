@@ -5,10 +5,12 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import listPlugin from '@fullcalendar/list'
 import interactionPlugin from '@fullcalendar/interaction'
+import EventModal from './EventModal'
+import moment from 'moment'
 
 //est crud routes in controllers
 const Calendar = () => {
-  // const [open, setOpen] = useState(false)
+  const [modalOpen, setModalOpen] = useState(false)
   const [events, setEvents] = useState([])
   const calendarRef = useRef(events);
   calendarRef.current = events
@@ -36,20 +38,24 @@ const footerToolbarOptions = {
 const handleDateClick = (arg) => {
   const calendarApi = arg.view.calendar;
   calendarApi.unselect();
-  const newEvent = {
-    title: 'New Event',
-    start: (arg.start).toDate(), 
-    end: (arg.date).toDate(),
-    first: arg.first,
-    last: arg.last,
-    address: arg.address,
-    price: arg.price
-  }
-  setEvents([...calendarRef.current, newEvent])
+  setModalOpen(true)
 }
 
+  const handleEventAdded = (event) => {
+    setEvents([...events, event]);
+    setModalOpen(false)
+  }
+
+  const handleAddEventClick = () => {
+    setModalOpen(true)
+  }
+  const handleCloseModal = () => {
+    setModalOpen(false)
+  }
+  
   return (
-    <div className='text-blue-900 font-bold mx-1 mt-12'>
+    <section>
+    <div className='text-blue-900 font-bold mx-1 mt-12' style={{ position: "relative", zIndex: 0}}>
       <FullCalendar
       plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
       initialView='dayGridDay'
@@ -57,8 +63,14 @@ const handleDateClick = (arg) => {
       footerToolbar={footerToolbarOptions}
       dateClick={handleDateClick}
       events={events}
+      ref={calendarRef}
       />
     </div>
+    <div className="flex justify-center pt-4 mb-12">
+      <button className='grid rounded-lg bg-blue-900 text-white p-2' onClick={handleAddEventClick}>Add Event</button>
+    </div>
+    <EventModal className='opacity-100' isOpen={modalOpen} onClose={() => setModalOpen(false)} onEventAdded={handleEventAdded} />
+    </section>
   )
 }
 export default Calendar

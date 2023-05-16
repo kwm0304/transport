@@ -2,8 +2,10 @@ import { useState } from 'react'
 import { useEventContext } from '../hooks/useEventContext'
 import { useAuthContext } from '../hooks/useAuth'
 import DateTime from 'react-datetime'
+import Modal from 'react-modal'
+import { GrClose } from 'react-icons/gr'
 
-export default function EventModal({isOpen, onClose, onEve}) {
+export default function EventModal({isOpen, onClose, onEventAdded}) {
   const { dispatch } = useEventContext()
   const { user } = useAuthContext()
     const [title,setTitle]=useState('')
@@ -15,6 +17,12 @@ export default function EventModal({isOpen, onClose, onEve}) {
     const [last,setLast]=useState('')
     const [error, setError]=useState(null)
     const [emptyField, setEmptyField] = useState([])
+
+    const modalStyle = {
+      content: {
+        height: '90vh',
+      }
+    }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -31,6 +39,8 @@ export default function EventModal({isOpen, onClose, onEve}) {
         'Authorization': `Bearer ${user.token}`
       }
     })
+
+    
     const json = await response.json()
     if (!response.ok) {
       setError(json.error)
@@ -46,7 +56,7 @@ export default function EventModal({isOpen, onClose, onEve}) {
       setLast('')
       setError(null)
       setEmptyField([])
-      console.log('New Event added')
+      console.log('New Event added', event)
       dispatch({type: 'CREATE_EVENT', payload: json})
     }
     onClose()
@@ -54,21 +64,24 @@ export default function EventModal({isOpen, onClose, onEve}) {
 
   return(
     <Modal isOpen={isOpen} onRequestClose={onClose} style={modalStyle}>
+      <div className='flex justify-end text-xl text-blue-900' onClick={onClose}>
+      <GrClose />
+      </div>
       <div className="container my-1">
-        <h2 className='text-blue-900 font-bold uppercase text-center mb-12 mt-24 text-2xl'>Add Event</h2>
+        <h2 className='text-blue-900 font-bold uppercase text-center mb-12 mt-8 text-2xl'>Add Event</h2>
       <form onSubmit={handleSubmit} id='event-form' className='create'>
-        <div className="flex flex-cols-2 justify-center my-2 mx-12">
+        <div className="flex flex-cols-2 justify-center my-2 mx-2">
           <label htmlFor="title" className="w-20">Store</label>
           <input
           placeholder="Details"
           name='title'
-          type="title"
+          type="text"
           id="title"
           onChange={(e) => setTitle(e.target.value)}
           className="rounded-lg mx-2 text-center border border-gray-950 w-48"
           />
         </div>
-        <div className="flex flex-cols-2 justify-center my-2 mx-12">
+        <div className="flex flex-cols-2 justify-center my-2 mx-2">
           <label htmlFor="price" className="w-20">Price</label>
           <input
           placeholder="100"
@@ -79,7 +92,7 @@ export default function EventModal({isOpen, onClose, onEve}) {
           className="rounded-lg mx-2 text-center border border-gray-950 w-48"
           />
         </div>
-        <div className="flex flex-cols-2 justify-center my-2 mx-12">
+        <div className="flex flex-cols-2 justify-center my-2 mx-2">
           <label htmlFor="address" className="w-20">Address</label>
           <input
           placeholder="1234 5th St."
@@ -90,7 +103,7 @@ export default function EventModal({isOpen, onClose, onEve}) {
           className="rounded-lg mx-2 text-center border border-gray-950 w-48"
           />
         </div>
-        <div className="flex flex-cols-2 justify-center my-2 mx-12">
+        <div className="flex flex-cols-2 justify-center my-2 mx-2">
           <label htmlFor="firstName" className="w-20">First Name</label>
           <input
           placeholder="Jane"
@@ -101,7 +114,7 @@ export default function EventModal({isOpen, onClose, onEve}) {
           className="rounded-lg mx-2 text-center border border-gray-950 w-48"
           />
         </div>
-        <div className="flex flex-cols-2 justify-center my-2 mx-12 ">
+        <div className="flex flex-cols-2 justify-center my-2 mx-2 ">
           <label htmlFor="lastName" className="w-20">Last Name</label>
           <input
           placeholder="Doe"
@@ -112,17 +125,19 @@ export default function EventModal({isOpen, onClose, onEve}) {
           className="rounded-lg mx-2 text-center border border-gray-950 w-48"
           />
         </div>
-        <div className="flex justify-center  my-2 mx-12 ">
-          <div className="grid grid-cols-2 text-start">
-          <label htmlFor="store" className='ml-3'>Start</label>
-            <DateTime value={start} onChange={(date) => setStart(date)} />
-          </div>
-          <div className="grid grid-cols-2 text-center">
-          <label htmlFor="end">End</label>
-            <DateTime value={end} onChange={(date) => setEnd(date)} />
-          </div>
+        <div className="flex flex-cols-2 justify-center my-2 mx-2 ">
+        <label htmlFor="store" className='w-20'>Start</label>
+        <div className="text-center">
+        <DateTime value={start} onChange={(date) => setStart(date)} className='rounded-lg mx-2 text-center border border-gray-950 w-48'/>
         </div>
-        <div className='grid justify-items-center pt-12'>
+        </div>
+        <div className="flex flex-cols-2 justify-center my-2 mx-2 ">
+        <label htmlFor="end" className='w-20'>End</label>
+        <div className="text-center ">
+        <DateTime value={end} onChange={(date) => setEnd(date)} className='rounded-lg mx-2 text-center border border-gray-950 w-48'/>
+        </div>
+        </div>
+        <div className='grid justify-items-center pt-'>
           <button type='submit' className='rounded-lg bg-blue-900 text-white px-2 py-1 w-36 shadow-xl'>Submit</button>
         </div>
       </form>

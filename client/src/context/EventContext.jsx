@@ -1,4 +1,5 @@
 import { createContext, useReducer } from 'react'
+import PropTypes from 'prop-types'
 
 export const EventContext = createContext()
 
@@ -10,7 +11,7 @@ export const eventReducer = (state, action) => {
       }
     case 'CREATE_EVENT':
       return {
-        events: [action.payload, ...state.events]
+        events: [action.payload, state.events]
       }
     case 'DELETE_EVENT':
       return {
@@ -30,4 +31,8 @@ export const EventContextProvider = ({ children }) => {
       { children }
     </EventContext.Provider>
   )
+}
+
+EventContextProvider.propTypes = {
+  children: PropTypes.node.isRequired
 }

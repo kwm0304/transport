@@ -4,6 +4,7 @@ import { useAuthContext } from '../hooks/useAuth'
 import DateTime from 'react-datetime'
 import Modal from 'react-modal'
 import { GrClose } from 'react-icons/gr'
+import moment from 'moment'
 
 
 
@@ -33,7 +34,14 @@ export default function EventModal  ({ isOpen, onClose, onEventAdded })  {
       setError('You must be logged in')
       return
     }
-    const event = {title, start: start.toDate(), end:end.toDate(), first, last, price, address}
+    let startValue = start;
+    let endValue = end;
+    if (moment.isMoment(start)) {
+      startValue = start.toDate()
+    } if (moment.isMoment(end)) {
+      endValue = end.toDate()
+    }
+    const event = {title, start: startValue, end: endValue, first, last, price, address}
     const response = await fetch('/api/events', {
       method: 'POST',
       body: JSON.stringify(event),

@@ -8,8 +8,7 @@ import interactionPlugin from '@fullcalendar/interaction'
 import EventModal from './EventModal'
 import moment from 'moment'
 
-//TODO after initial event, moment doesn't capture time. Inspect line 17
-//est crud routes in controllers
+//TODO handle retrieval of events on login
 const Calendar = () => {
   const [modalOpen, setModalOpen] = useState(false)
   const [events, setEvents] = useState([])

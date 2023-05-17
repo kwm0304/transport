@@ -17,10 +17,12 @@ const getEvent = async (req, res) => {
     return res.status(404).json({error: 'No event matches this id'})
   }
   res.status(200).json(event)
+  
 }
 
 const createEvent = async (req, res) => {
-  const { title, start, end } = req.body
+  const { title, start, end, first, last, price, address } = req.body
+  console.log('reqbody again', req.body)
   let emptyFields = []
   if (!title) {
     emptyFields.push('title')
@@ -28,14 +30,14 @@ const createEvent = async (req, res) => {
     emptyFields.push('start')
   } if (!end) {
     emptyFields.push('end')
-  } if(!first) {
+  } if (!first) {
     emptyFields.push('first')
-  } if(!last) {
+  } if (!last) {
     emptyFields.push('last')
-  } if(!address) {
-    emptyFields.push('address')
-  } if(!price) {
+  } if (!price) {
     emptyFields.push('price')
+  } if (!address) {
+    emptyFields.push('address')
   }
    if (emptyFields.length > 0) {
     return res.status(400).json({ error: 'Please fill in all fields', emptyFields})
@@ -43,7 +45,7 @@ const createEvent = async (req, res) => {
 
   try {
     const user_id = req.user._id
-    const event = await Event.create({title, start, end, user_id, first, last, price, address })
+    const event = await Event.create({ title, start, end, user_id, first, last, price, address })
     res.status(200).json(event)
   } catch (error) {
     res.status(400).json({error: error.message})

@@ -5,7 +5,9 @@ import DateTime from 'react-datetime'
 import Modal from 'react-modal'
 import { GrClose } from 'react-icons/gr'
 
-export default function EventModal({isOpen, onClose, onEventAdded}) {
+
+
+export default function EventModal  ({ isOpen, onClose, onEventAdded })  {
   const { dispatch } = useEventContext()
   const { user } = useAuthContext()
     const [title,setTitle]=useState('')
@@ -13,7 +15,7 @@ export default function EventModal({isOpen, onClose, onEventAdded}) {
     const [start,setStart]=useState(new Date())
     const [end,setEnd]=useState(new Date())
     const [address,setAddress]=useState('')
-    const [first,setFirst]=useState('')
+    const [first,setFirst] = useState('')
     const [last,setLast]=useState('')
     const [error, setError]=useState(null)
     const [emptyField, setEmptyField] = useState([])
@@ -24,13 +26,14 @@ export default function EventModal({isOpen, onClose, onEventAdded}) {
       }
     }
 
+    console.log('first', first)
   const handleSubmit = async (e) => {
     e.preventDefault()
     if(!user) {
       setError('You must be logged in')
       return
     }
-    const event = {title, start, end, first, last, price, address}
+    const event = {title, start: start.toDate(), end:end.toDate(), first, last, price, address}
     const response = await fetch('/api/events', {
       method: 'POST',
       body: JSON.stringify(event),
@@ -42,6 +45,7 @@ export default function EventModal({isOpen, onClose, onEventAdded}) {
 
     
     const json = await response.json()
+    console.log('json', json)
     if (!response.ok) {
       setError(json.error)
       setEmptyField(json.emptyField)
@@ -58,7 +62,7 @@ export default function EventModal({isOpen, onClose, onEventAdded}) {
       setEmptyField([])
       console.log('New Event added', event)
       onEventAdded(event)
-      dispatch({type: 'CREATE_EVENT', payload: json})
+      dispatch({ type: 'CREATE_EVENT', payload: json })
     }
     onClose()
   }
@@ -108,9 +112,10 @@ export default function EventModal({isOpen, onClose, onEventAdded}) {
           <label htmlFor="firstName" className="w-20">First Name</label>
           <input
           placeholder="Jane"
-          name='firstName'
-          type="firstName"
-          id="firstName"
+          name='first'
+          type="first"
+          id="first"
+          value={first}
           onChange={(e) => setFirst(e.target.value)}
           className="rounded-lg mx-2 text-center border border-gray-950 w-48"
           />
@@ -147,3 +152,5 @@ export default function EventModal({isOpen, onClose, onEventAdded}) {
   )
 
 }
+
+

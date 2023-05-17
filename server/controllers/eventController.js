@@ -28,13 +28,22 @@ const createEvent = async (req, res) => {
     emptyFields.push('start')
   } if (!end) {
     emptyFields.push('end')
-  } if (emptyFields.length > 0) {
+  } if(!first) {
+    emptyFields.push('first')
+  } if(!last) {
+    emptyFields.push('last')
+  } if(!address) {
+    emptyFields.push('address')
+  } if(!price) {
+    emptyFields.push('price')
+  }
+   if (emptyFields.length > 0) {
     return res.status(400).json({ error: 'Please fill in all fields', emptyFields})
   }
 
   try {
     const user_id = req.user._id
-    const event = await Event.create({title, start, end, user_id})
+    const event = await Event.create({title, start, end, user_id, first, last, price, address })
     res.status(200).json(event)
   } catch (error) {
     res.status(400).json({error: error.message})

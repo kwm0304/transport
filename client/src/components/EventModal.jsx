@@ -57,6 +57,7 @@ export default function EventModal({isOpen, onClose, onEventAdded}) {
       setError(null)
       setEmptyField([])
       console.log('New Event added', event)
+      onEventAdded(event)
       dispatch({type: 'CREATE_EVENT', payload: json})
     }
     onClose()

@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect, useContext } from 'react'
 //imports
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
@@ -7,13 +7,34 @@ import listPlugin from '@fullcalendar/list'
 import interactionPlugin from '@fullcalendar/interaction'
 import EventModal from './EventModal'
 import moment from 'moment'
+import { EventContext } from '../context/EventContext'
+import { useAuthContext } from '../hooks/useAuth'
 
 //TODO handle retrieval of events on login
 const Calendar = () => {
+  const { user } = useAuthContext()
   const [modalOpen, setModalOpen] = useState(false)
-  const [events, setEvents] = useState([])
   const calendarRef = useRef(null)
-  console.log('EVENTS', [events])
+  const { events, dispatch } = useContext(EventContext)
+
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      const response = await fetch('/api/events', {
+        headers: {
+          'Authorization': `Bearer ${user.token}`
+        }
+      });
+      if (response.ok) {
+        const json = await response.json();
+        dispatch({ type: 'SET_EVENTS', payload: json });
+      }
+    };
+    if (user) {
+      fetchEvents();
+    }
+  }, [dispatch, user]);
+
   const headerToolbarOptions = {
     left: 'title',
   }
@@ -22,23 +43,21 @@ const footerToolbarOptions = {
   center: 'dayGridMonth,timeGridWeek,timeGridDay,listDay'
 }
 
-const handleDateClick = (event) => {
-  setEvents((prevEvents) => [...prevEvents, event])
+const handleDateClick = () => {
   setModalOpen(true)
 }
 
   const handleEventAdded = (event) => {
     let calendarApi = calendarRef.current.getApi()
     calendarApi.addEvent({
-      start: moment(event.start),
-      end: event.end,
+      start: moment(new Date (event.start)),
+      end: moment(new Date(event.end)),
       title: event.title,
       address: event.address,
       price: event.price,
       first: event.first,
       last: event.last
     })
-    setEvents([...events, event]);
     setModalOpen(false)
   }
 
@@ -47,10 +66,6 @@ const handleDateClick = (event) => {
   }
   const handleCloseModal = () => {
     setModalOpen(false)
-  }
-
-  const handleDateSet = () => {
-
   }
 
   return (
@@ -64,7 +79,6 @@ const handleDateClick = (event) => {
       dateClick={handleDateClick}
       events={events}
       selectAllow={(info) => !info.allDay}
-      datesSet={(date) => handleDateSet(date)}
       eventAdd={(event) => handleEventAdded(event)}
       ref={calendarRef}
       />
@@ -78,7 +92,6 @@ const handleDateClick = (event) => {
     isOpen={modalOpen} 
     onClose={handleCloseModal} 
     onEventAdded={handleEventAdded} />
-    
     </section>
   )
 }

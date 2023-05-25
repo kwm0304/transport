@@ -5,7 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server/server.js"
+    "start": "node server/server.js",
+    "develop": "concurrently \"npm run start:server\" \"npm run start:client\"",
+    "start:server": "cd server && npm start",
+    "start:client": "cd client && npm run dev",
+    "install": "cd srver && npm i && cd ../client && npm i",
+    "build": "cd client && npm run build"
   },
   "repository": {
     "type": "git",
@@ -17,8 +22,5 @@
   "bugs": {
     "url": "https://github.com/kwm0304/transport/issues"
   },
-  "homepage": "https://github.com/kwm0304/transport#readme",
-  "dependencies": {
-    "concurrently": "^8.0.1"
-  }
+  "homepage": "https://github.com/kwm0304/transport#readme"
 }

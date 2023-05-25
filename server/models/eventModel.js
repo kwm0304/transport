@@ -21,18 +21,18 @@ const eventSchema = new Schema({
   },
   first: {
     type: String,
-    required: true
+    required: true,
   },
   last: {
     type: String,
-    required: true
+    required: true,
   },
   price: {
     type: Number,
     required: true
   },
   address: {
-    type: String
+    type: String,
   }  
 }, {timesatamps: true})
 

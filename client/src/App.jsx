@@ -9,6 +9,8 @@ import Dashboard from './components/Dashboard'
 import Finances from './components/Finances'
 import NoMatch from './components/NoMatch'
 import StartOfDay from './components/StartOfDay'
+import EventCard from './components/EventCard'
+
 //imports
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import Modal from 'react-modal'
@@ -54,6 +56,10 @@ function App() {
           <Route 
           path='/*'
           element={<NoMatch />}
+          />
+          <Route
+          path='/eventCard'
+          element={<EventCard />}
           />
         </Routes>
       </div>

@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server/server.js"
   },
   "repository": {
     "type": "git",
@@ -16,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/kwm0304/transport/issues"
   },
-  "homepage": "https://github.com/kwm0304/transport#readme"
+  "homepage": "https://github.com/kwm0304/transport#readme",
+  "dependencies": {
+    "concurrently": "^8.0.1"
+  }
 }

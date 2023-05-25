@@ -46,6 +46,9 @@ const footerToolbarOptions = {
 const handleDateClick = () => {
   setModalOpen(true)
 }
+const handleEventClick = (info) => {
+  
+}
 
   const handleEventAdded = (event) => {
     let calendarApi = calendarRef.current.getApi()
@@ -81,6 +84,7 @@ const handleDateClick = () => {
       selectAllow={(info) => !info.allDay}
       eventAdd={(event) => handleEventAdded(event)}
       ref={calendarRef}
+      eventClick={handleEventClick}
       />
     </div>
     

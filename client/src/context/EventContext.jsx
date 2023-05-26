@@ -3,19 +3,24 @@ import PropTypes from 'prop-types'
 
 export const EventContext = createContext()
 
-export const eventReducer = (state, action) => {
+export const eventReducer = (state = { events: [] }, action) => {
+  const newEvents = Array.isArray(action.payload) ? action.payload : [action.payload]
+
+  console.log('STATE', state)
   switch(action.type) {
     case 'SET_EVENTS': 
       return {
+        ...state,
         events: action.payload
       }
     case 'CREATE_EVENT':
-      
       return {
-        events: [action.payload, state.events]
+        ...state,
+        events: [...state.events, ...newEvents]
       }
     case 'DELETE_EVENT':
       return {
+        ...state,
         events: state.events.filter((e) => e._id !== action.payload._id)
       }
       default:
@@ -24,11 +29,9 @@ export const eventReducer = (state, action) => {
 }
 
 export const EventContextProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(eventReducer, {
-    events: null
-  })
+  const [events, dispatch] = useReducer(eventReducer, [])
   return(
-    <EventContext.Provider value={{...state, dispatch}}>
+    <EventContext.Provider value={{events, dispatch}}>
       { children }
     </EventContext.Provider>
   )

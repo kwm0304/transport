@@ -18,8 +18,9 @@ const Calendar = () => {
   const [modalOpen, setModalOpen] = useState(false)
   const [modal2Open, setModal2Open] = useState(false)
   const calendarRef = useRef(null)
-  const { events, dispatch } = useContext(EventContext)
+  const { events=[], dispatch } = useContext(EventContext)
   const [selectedEvent, setSelectedEvent] = useState(null)
+  
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -36,7 +37,7 @@ const Calendar = () => {
     if (user) {
       fetchEvents();
     }
-  }, [dispatch, user, events]);
+  }, [dispatch, user]);
 
   const headerToolbarOptions = {
     left: 'title',
@@ -73,39 +74,25 @@ const Calendar = () => {
   }
 
   const handleEventAdded = async (event) => {
-    try {
+    
       let calendarApi = calendarRef.current.getApi();
-      const response = await fetch('/api/events', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user.token}`
-        },
-        body: JSON.stringify(event)
-      });
-      if (response.ok) {
-        const newEvent = await response.json();
+    
+        
         calendarApi.addEvent({
-          id: newEvent._id, 
-          start: moment(newEvent.start),
-          end: moment(newEvent.end),
-          title: newEvent.title,
-          address: newEvent.address,
-          price: newEvent.price,
-          first: newEvent.first,
-          last: newEvent.last
+          id: event._id, 
+          start: moment(event.start),
+          end: moment(event.end),
+          title: event.title,
+          address: event.address,
+          price: event.price,
+          first: event.first,
+          last: event.last
         });
 
-        const updatedEvents = [...events, newEvent]
-        dispatch({ type: 'SET_EVENTS', payload: updatedEvents})
-      } else {
-        throw new Error('Failed to add event');
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
+        const updatedEvents = [...events, event]
+        dispatch({ type: 'SET_EVENTS', payload: [updatedEvents]})
       setModalOpen(false);
-    }
+    
   };
 
   const handleAddEventClick = () => {

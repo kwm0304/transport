@@ -6,8 +6,6 @@ import Modal from 'react-modal'
 import { GrClose } from 'react-icons/gr'
 import moment from 'moment'
 
-
-
 export default function EventModal  ({ isOpen, onClose, onEventAdded })  {
   const { dispatch } = useEventContext()
   const { user } = useAuthContext()
@@ -51,12 +49,11 @@ export default function EventModal  ({ isOpen, onClose, onEventAdded })  {
       }
     })
 
-    
-    const json = await response.json()
-    console.log('json', json)
+    const newEvent = await response.json()
+    console.log('json', newEvent)
     if (!response.ok) {
-      setError(json.error)
-      setEmptyField(json.emptyField)
+      setError(newEvent.error)
+      setEmptyField(newEvent.emptyField)
     }
     if (response.ok) {
       setTitle('')
@@ -68,9 +65,9 @@ export default function EventModal  ({ isOpen, onClose, onEventAdded })  {
       setLast('')
       setError(null)
       setEmptyField([])
-      console.log('New Event added', event)
-      onEventAdded(event)
-      dispatch({ type: 'CREATE_EVENT', payload: json })
+      console.log('New Event added', newEvent)
+      onEventAdded(newEvent)
+      dispatch({ type: 'CREATE_EVENT', payload: newEvent })
     }
     onClose()
   }
@@ -160,5 +157,3 @@ export default function EventModal  ({ isOpen, onClose, onEventAdded })  {
   )
 
 }
-
-

@@ -5,9 +5,11 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import listPlugin from '@fullcalendar/list'
 import interactionPlugin from '@fullcalendar/interaction'
+import moment from 'moment'
+//components
 import EventModal from './EventModal'
 import EventCard from './EventCard'
-import moment from 'moment'
+//hooks/context
 import { EventContext } from '../context/EventContext'
 import { useAuthContext } from '../hooks/useAuth'
 
@@ -21,7 +23,6 @@ const Calendar = () => {
   const { events=[], dispatch } = useContext(EventContext)
   const [selectedEvent, setSelectedEvent] = useState(null)
   
-
   useEffect(() => {
     const fetchEvents = async () => {
       const response = await fetch('/api/events', {
@@ -39,14 +40,6 @@ const Calendar = () => {
     }
   }, [dispatch, user]);
 
-  const headerToolbarOptions = {
-    left: 'title',
-  }
-  
-  const footerToolbarOptions = {
-    center: 'dayGridMonth,timeGridWeek,timeGridDay,listDay'
-  }
-
   const handleDateClick = () => {
     setModalOpen(true)
   }
@@ -58,6 +51,7 @@ const Calendar = () => {
       const lastName = info.event._def.extendedProps.last
       const startTime = info.event._instance.range.start
       const endTime = info.event._instance.range.end
+      const phoneNumber = info.event._def.extendedProps.phoneNumber
       setSelectedEvent({
         store,
         price,
@@ -65,7 +59,8 @@ const Calendar = () => {
         firstName,
         lastName,
         startTime,
-        endTime
+        endTime,
+        phoneNumber
       })
       console.log('START', startTime)
       console.log('starttype', typeof startTime)
@@ -74,10 +69,7 @@ const Calendar = () => {
   }
 
   const handleEventAdded = async (event) => {
-    
       let calendarApi = calendarRef.current.getApi();
-    
-        
         calendarApi.addEvent({
           id: event._id, 
           start: moment(event.start),
@@ -86,13 +78,12 @@ const Calendar = () => {
           address: event.address,
           price: event.price,
           first: event.first,
-          last: event.last
+          last: event.last,
+          phoneNumber: event.phoneNumber
         });
-
         const updatedEvents = [...events, event]
         dispatch({ type: 'SET_EVENTS', payload: [updatedEvents]})
       setModalOpen(false);
-    
   };
 
   const handleAddEventClick = () => {
@@ -104,6 +95,13 @@ const Calendar = () => {
   }
   const handleCloseModal2 = () => {
     setModal2Open(false)
+  }
+  const headerToolbarOptions = {
+    left: 'title',
+  }
+  
+  const footerToolbarOptions = {
+    center: 'dayGridMonth,timeGridWeek,timeGridDay,listDay'
   }
 
   return (
@@ -120,6 +118,8 @@ const Calendar = () => {
       eventAdd={(event) => handleEventAdded(event)}
       ref={calendarRef}
       eventClick={handleEventClick}
+      editable
+      selectable
       />
     </div>
     

@@ -16,6 +16,7 @@ export default function EventModal  ({ isOpen, onClose, onEventAdded })  {
     const [address,setAddress]=useState('')
     const [first,setFirst] = useState('')
     const [last,setLast]=useState('')
+    const [phoneNumber, setPhoneNumber] = useState(0)
     const [error, setError]=useState(null)
     const [emptyField, setEmptyField] = useState([])
 
@@ -39,7 +40,7 @@ export default function EventModal  ({ isOpen, onClose, onEventAdded })  {
     } if (moment.isMoment(end)) {
       endValue = end.toDate()
     }
-    const event = {title, start: startValue, end: endValue, first, last, price, address}
+    const event = {title, start: startValue, end: endValue, first, last, price, address, phoneNumber}
     const response = await fetch('/api/events', {
       method: 'POST',
       body: JSON.stringify(event),
@@ -58,6 +59,7 @@ export default function EventModal  ({ isOpen, onClose, onEventAdded })  {
     if (response.ok) {
       setTitle('')
       setPrice(0)
+      setPhoneNumber(0)
       setStart(null)
       setEnd(null)
       setAddress('')
@@ -99,6 +101,17 @@ export default function EventModal  ({ isOpen, onClose, onEventAdded })  {
           type="number"
           id="price"
           onChange={(e) => setPrice(e.target.value)}
+          className="rounded-lg mx-2 text-center border border-gray-950 w-48"
+          />
+        </div>
+        <div className="flex flex-cols-2 justify-center my-2 mx-2">
+          <label htmlFor="phoneNumber" className="w-20">Phone</label>
+          <input
+          placeholder="7044670444"
+          name='phoneNumber'
+          type="number"
+          id="phoneNumber"
+          onChange={(e) => setPhoneNumber(e.target.value)}
           className="rounded-lg mx-2 text-center border border-gray-950 w-48"
           />
         </div>

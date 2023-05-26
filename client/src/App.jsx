@@ -17,6 +17,7 @@ import Modal from 'react-modal'
 Modal.setAppElement('#root')
 
 import { useAuthContext } from './hooks/useAuth'
+import Contacts from './components/Contacts'
 
 function App() {
   const { user } = useAuthContext()
@@ -60,6 +61,10 @@ function App() {
           <Route
           path='/eventCard'
           element={<EventCard />}
+          />
+          <Route
+          path='/contacts'
+          element={<Contacts />}
           />
         </Routes>
       </div>

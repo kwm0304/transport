@@ -1,7 +1,56 @@
 //today, week, month, year
 //expenses
+import { useContext, useEffect } from 'react'
+import { EventContext } from '../context/EventContext'
+import { useAuthContext } from '../hooks/useAuth'
+import moment from 'moment'
 
 const Finances = () => {
+  const { user } = useAuthContext()
+  const { events = {events: []}, dispatch } = useContext(EventContext)
+  console.log(typeof events)
+  console.log('EVENTS', events)
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch('api/events', {
+          headers: {
+            'Authorization': `Bearer ${user.token}`
+          }
+        })
+        const data = await response.json()
+        dispatch({ type: 'SET_EVENTS', payload: data })
+        console.log('data', data)
+      } catch (error) {
+        console.error('Error fetching events', error)
+      }
+    }
+    fetchEvents()
+  },[dispatch, user])
+
+  const today = moment().startOf('day')
+
+  const calculateTotalPrice = (period) => {
+    if (events.length === 0) {
+      return 0
+    }
+
+   const totalPrice = events.events.reduce((total, event) => {
+    const eventDate = moment(event.start).startOf('day');
+    if (period === 'today' && eventDate.isSame(today, 'day')) {
+      return total + event.price
+    } else if (period === 'week' && eventDate.isSame(today, 'week')) {
+      return total + event.price
+    } else if (period === 'month' && eventDate.isSame(today, 'month')) {
+      return total + event.price;
+    } else if (period === 'year' && eventDate.isSame(today, 'year')) {
+      return total + event.price;
+    }
+    return total
+  }, 0)
+  return totalPrice
+  }
   return(
     <div className="py-2">
     <h2 className="text-blue-900 font-bold text-3xl text-center mb-10 mt-12">Finances</h2>
@@ -28,22 +77,22 @@ const Finances = () => {
         <h4 className="text-green-500">Total</h4>
       </div>
       <div className="grid grid-cols-1 font-bold">
-        <h4 >$200</h4>
+        <h4 >${calculateTotalPrice('today')}</h4>
         <h4>$20</h4>
         <h4 className="text-green-500">$220</h4>
       </div>
       <div className="grid grid-cols-1 font-bold">
-        <h4 >$1000</h4>
+        <h4 >${calculateTotalPrice('week')}</h4>
         <h4>$100</h4>
         <h4  className="text-green-500">$1100</h4>
       </div>
       <div className="grid grid-cols-1 font-bold">
-        <h4 >$4000</h4>
+        <h4 >${calculateTotalPrice('month')}</h4>
         <h4>$400</h4>
         <h4  className="text-green-500">$4400</h4>
       </div>
       <div className="grid grid-cols-1 font-bold">
-        <h4 >$48000</h4>
+        <h4 >${calculateTotalPrice('year')}</h4>
         <h4>$4800</h4>
         <h4  className="text-green-500">$52800</h4>
       </div>

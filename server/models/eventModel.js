@@ -33,6 +33,9 @@ const eventSchema = new Schema({
   },
   address: {
     type: String,
+  },
+  phoneNumber: {
+    type: String
   }  
 }, {timesatamps: true})
 

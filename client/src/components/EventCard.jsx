@@ -3,9 +3,10 @@ import { AiOutlineClose } from 'react-icons/ai'
 import Modal from 'react-modal'
 
 export default function EventCard ({ isOpen, onClose, props }) {
-  const { store, address, startTime, endTime, firstName, lastName, price, id } = props
+  const { store, address, startTime, endTime, firstName, lastName, price, id, phoneNumber } = props
   const cleanStartTime = (startTime.toLocaleString()).split(' ')
   const cleanEndTime = (endTime.toLocaleString()).split(' ')
+  
 return(
   <Modal isOpen={isOpen} onRequestClose={onClose}>
     <div className="grid justify-items-end text-blue-900 font-bold text-xl">
@@ -32,7 +33,7 @@ return(
       <p>{store}</p>
     </div>
     <div className="flex flex-col items-center text-center text-blue-900 py-8 px-12">
-      <FaPhoneAlt className='text-5xl mb-4'/>
+      <a href={'tel:'+{phoneNumber}}><FaPhoneAlt className='text-5xl mb-4'/></a>
       <p>{firstName} {lastName}</p>
     </div>
     </div>

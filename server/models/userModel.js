@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const validator = require('validator')
-
+const Events = require('./eventModel')
 const Schema = mongoose.Schema
 
 const userSchema = new Schema({

@@ -3,7 +3,7 @@ import { AiOutlineClose } from 'react-icons/ai'
 import Modal from 'react-modal'
 
 export default function EventCard ({ isOpen, onClose, props }) {
-  const { store, address, startTime, endTime, firstName, lastName, price } = props
+  const { store, address, startTime, endTime, firstName, lastName, price, id } = props
   const cleanStartTime = (startTime.toLocaleString()).split(' ')
   const cleanEndTime = (endTime.toLocaleString()).split(' ')
 return(

@@ -36,67 +36,77 @@ const Calendar = () => {
     if (user) {
       fetchEvents();
     }
-  }, [dispatch, user]);
+  }, [dispatch, user, events]);
 
   const headerToolbarOptions = {
     left: 'title',
   }
   
-const footerToolbarOptions = {
-  center: 'dayGridMonth,timeGridWeek,timeGridDay,listDay'
-}
-
-const handleDateClick = () => {
-  setModalOpen(true)
-}
-const handleEventClick = (info) => {
-    const store = info.event.title
-    const price = info.event._def.extendedProps.price
-    const address = info.event._def.extendedProps.address
-    const firstName = info.event._def.extendedProps.first
-    const lastName = info.event._def.extendedProps.last
-    const startTime = info.event._instance.range.start
-    const endTime = info.event._instance.range.end
-    setSelectedEvent({
-      store,
-      price,
-      address,
-      firstName,
-      lastName,
-      startTime,
-      endTime
-    })
-    console.log('START', startTime)
-    console.log('starttype', typeof startTime)
-    console.log('SE', {selectedEvent})
-  setModal2Open(true)
-}
-
-  const handleEventAdded = (event) => {
-    let calendarApi = calendarRef.current.getApi()
-    calendarApi.addEvent({
-      start: moment(new Date (event.start)),
-      end: moment(new Date(event.end)),
-      title: event.title,
-      address: event.address,
-      price: event.price,
-      first: event.first,
-      last: event.last
-    })
-    setModalOpen(false)
-
-    const updatedEvents = calendarApi.getEvents().map((event) => ({
-      start:event.start,
-      end:event.end,
-      title:event.title,
-      address:event.extendedProps.address,
-      price:event.extendedProps.price,
-      first:event.extendedProps.first,
-      last:event.extendedProps.last
-    }))
-    dispatch({ type: 'SET_EVENTS', payload: updatedEvents})
-    console.log('updatedEvents', updatedEvents)
+  const footerToolbarOptions = {
+    center: 'dayGridMonth,timeGridWeek,timeGridDay,listDay'
   }
+
+  const handleDateClick = () => {
+    setModalOpen(true)
+  }
+  const handleEventClick = (info) => {
+      const store = info.event.title
+      const price = info.event._def.extendedProps.price
+      const address = info.event._def.extendedProps.address
+      const firstName = info.event._def.extendedProps.first
+      const lastName = info.event._def.extendedProps.last
+      const startTime = info.event._instance.range.start
+      const endTime = info.event._instance.range.end
+      setSelectedEvent({
+        store,
+        price,
+        address,
+        firstName,
+        lastName,
+        startTime,
+        endTime
+      })
+      console.log('START', startTime)
+      console.log('starttype', typeof startTime)
+      console.log('SE', {selectedEvent})
+    setModal2Open(true)
+  }
+
+  const handleEventAdded = async (event) => {
+    try {
+      let calendarApi = calendarRef.current.getApi();
+      const response = await fetch('/api/events', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`
+        },
+        body: JSON.stringify(event)
+      });
+      if (response.ok) {
+        const newEvent = await response.json();
+        calendarApi.addEvent({
+          id: newEvent._id, 
+          start: moment(newEvent.start),
+          end: moment(newEvent.end),
+          title: newEvent.title,
+          address: newEvent.address,
+          price: newEvent.price,
+          first: newEvent.first,
+          last: newEvent.last
+        });
+
+        const updatedEvents = [...events, newEvent]
+        dispatch({ type: 'SET_EVENTS', payload: updatedEvents})
+      } else {
+        throw new Error('Failed to add event');
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setModalOpen(false);
+    }
+  };
 
   const handleAddEventClick = () => {
     setModalOpen(true)

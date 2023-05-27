@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useContext } from 'react';
 import { FaAddressCard, FaPlus, FaEdit, FaCheck, FaTimes } from 'react-icons/fa';
-
+import { useAuthContext } from '../hooks/useAuth';
+import { PhonebookContext } from '../context/PhonebookContext'
 const Contacts = () => {
-  const [storePhonebook, setStorePhonebook] = useState([]);
-  const [customerPhonebook, setCustomerPhonebook] = useState([]);
+  const { phonebooks=[], dispatch } = useContext(PhonebookContext);
+  const { user } = useAuthContext();
   const [storeName, setStoreName] = useState('');
   const [storeNumber, setStoreNumber] = useState('');
   const [customerName, setCustomerName] = useState('');
@@ -12,99 +13,58 @@ const Contacts = () => {
   const [showStoreForm, setShowStoreForm] = useState(false);
   const [showCustomerForm, setShowCustomerForm] = useState(false);
   const [editIndex, setEditIndex] = useState(-1);
+  const [error, setError] = useState(null);
 
+  console.log('phonebooks', phonebooks);
+  if (!user) {
+    return <div>Loading...</div>
+  }
+  console.log('pb type', typeof phonebooks)
   const tabs = [
     {
       label: 'Stores',
-      phonebook: storePhonebook,
-      setPhonebook: setStorePhonebook,
+      phonebookType: 'store',
       name: storeName,
       setName: setStoreName,
       number: storeNumber,
       setNumber: setStoreNumber,
       showForm: showStoreForm,
-      setShowForm: setShowStoreForm
+      setShowForm: setShowStoreForm,
     },
     {
       label: 'Customers',
-      phonebook: customerPhonebook,
-      setPhonebook: setCustomerPhonebook,
+      phonebookType: 'customer',
       name: customerName,
       setName: setCustomerName,
       number: customerNumber,
       setNumber: setCustomerNumber,
       showForm: showCustomerForm,
-      setShowForm: setShowCustomerForm
-    }
+      setShowForm: setShowCustomerForm,
+    },
   ];
 
-  useEffect(() => {
-    fetchPhonebooks();
-  }, []);
-
-  const fetchPhonebooks = async () => {
-    try {
-      const response = await fetch('/api/phonebooks/');
-      console.log('res', response)
-      const data = await response.json();
-      setStorePhonebook(data.storePhonebook);
-      setCustomerPhonebook(data.customerPhonebook);
-    } catch (error) {
-      console.error('Error fetching phonebooks:', error);
-    }
-  };
-
-  const addEntry = async (e, phonebook, setPhonebook, name, number, setName, setNumber, setShowForm) => {
+  const handleAddEntry = async (e, phonebookType, name, number, setName, setNumber, setShowForm) => {
     e.preventDefault();
     const newEntry = { name, number };
-
-    try {
-      const response = await fetch('/api/phonebooks', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({newEntry}),
-      });
-
-      const addedEntry = await response.json();
-      setPhonebook([...phonebook, addedEntry]);
+    const response = await fetch('/api/contacts', {
+      method: 'POST',
+      body: JSON.stringify(newEntry),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.token}`,
+      },
+    });
+    const newerEntry = await response.json();
+    console.log('newerEntry', newerEntry);
+    if (!response.ok) {
+      setError(newerEntry.error);
+    }
+    if (response.ok && user) {
+      
+      dispatch({ type: 'CREATE_PHONEBOOK', payload: { phonebookType, entry: newerEntry } });
       setName('');
       setNumber('');
       setShowForm(false);
-    } catch (error) {
-      console.error('Error adding phonebook entry:', error);
-    }
-  };
-
-  const deleteEntry = async (id, phonebook, setPhonebook) => {
-    try {
-      await fetch(`/api/phonebooks/${id}`, {
-        method: 'DELETE',
-      });
-
-      setPhonebook(phonebook.filter((entry) => entry._id !== id));
-    } catch (error) {
-      console.error('Error deleting phonebook entry:', error);
-    }
-  };
-
-  const updateEntry = async (id, updatedEntry, phonebook, setPhonebook) => {
-    try {
-      const response = await fetch(`/api/phonebooks/${id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedEntry),
-      });
-
-      const updatedEntryData = await response.json();
-      setPhonebook((prevPhonebook) =>
-        prevPhonebook.map((entry) => (entry._id === id ? updatedEntryData : entry))
-      );
-    } catch (error) {
-      console.error('Error updating phonebook entry:', error);
     }
   };
 
@@ -121,25 +81,22 @@ const Contacts = () => {
   };
 
   const handleEntryNameChange = (index, value) => {
-    const phonebook = tabs[activeTab].phonebook;
-    const updatedPhonebook = [...phonebook];
-    updatedPhonebook[index].name = value;
-    tabs[activeTab].setPhonebook(updatedPhonebook);
+    const updatedPhonebooks = [...phonebooks];
+    updatedPhonebooks[index].name = value;
+    dispatch({ type: 'SET_PHONEBOOK', payload: updatedPhonebooks });
   };
 
   const handleEntryNumberChange = (index, value) => {
-    const phonebook = tabs[activeTab].phonebook;
-    const updatedPhonebook = [...phonebook];
-    updatedPhonebook[index].number = value;
-    tabs[activeTab].setPhonebook(updatedPhonebook);
+    const updatedPhonebooks = [...phonebooks];
+    updatedPhonebooks[index].number = value;
+    dispatch({ type: 'SET_PHONEBOOK', payload: updatedPhonebooks });
   };
 
   const handleEditEntry = (index) => {
     setEditIndex(index);
   };
 
-  const handleSaveEntry = (id, updatedEntry) => {
-    updateEntry(id, updatedEntry, tabs[activeTab].phonebook, tabs[activeTab].setPhonebook);
+  const handleSaveEntry = () => {
     setEditIndex(-1);
   };
 
@@ -149,7 +106,7 @@ const Contacts = () => {
 
   return (
     <>
-      <h2 className='text-center text-blue-900 font-bold text-2xl pt-8'>Contacts</h2>
+      <h2 className="text-center text-blue-900 font-bold text-2xl pt-8">Contacts</h2>
       <div className="flex rounded-lg pt-6">
         {tabs.map((tab, index) => (
           <button
@@ -161,51 +118,47 @@ const Contacts = () => {
           </button>
         ))}
       </div>
-      <FaPlus className='text-blue-900 mr-2 rounded-lg mt-8 ml-4' onClick={() => changeShow(activeTab)} />
-      <div className='mt-4'>
-        {tabs[activeTab].phonebook.map((entry, index) => (
-          <div key={entry._id} className='flex items-center justify-center mt-2'>
+      <FaPlus className="text-blue-900 mr-2 rounded-lg mt-8 ml-4" onClick={() => changeShow(activeTab)} />
+      <div className="mt-4">
+        {Object.keys(phonebooks).map((phonebook, index) => (
+          <div key={phonebook.id} className="flex items-center justify-center mt-2">
             {editIndex === index ? (
               <>
                 <input
-                  type='text'
-                  value={entry.name}
+                  type="text"
+                  value={phonebook.name}
                   onChange={(e) => handleEntryNameChange(index, e.target.value)}
-                  className='rounded-lg border-2 border-solid border-gray-200 mx-2 w-32'
+                  className="rounded-lg border-2 border-solid border-gray-200 mx-2 w-32"
                 />
                 <input
-                  type='number'
-                  value={entry.number}
+                  type="number"
+                  value={phonebook.number}
                   onChange={(e) => handleEntryNumberChange(index, e.target.value)}
-                  className='rounded-lg border-2 border-solid border-gray-200 mx-2 w-24 text-center'
+                  className="rounded-lg border-2 border-solid border-gray-200 mx-2 w-24 text-center"
                 />
-                <button type='button' onClick={() => handleSaveEntry(entry._id, entry)}>
-                  <FaCheck className='text-green-500 text-2xl ml-2' />
+                <button type="button" onClick={handleSaveEntry}>
+                  <FaCheck className="text-green-500 text-2xl ml-2" />
                 </button>
-                <button type='button' onClick={handleCancelEdit}>
-                  <FaTimes className='text-red-500 text-2xl ml-2' />
+                <button type="button" onClick={handleCancelEdit}>
+                  <FaTimes className="text-red-500 text-2xl ml-2" />
                 </button>
               </>
             ) : (
               <>
-                <p className='rounded-lg border-2 border-solid border-gray-200 mx-2 w-32'>{entry.name}</p>
-                <p className='rounded-lg border-2 border-solid border-gray-200 mx-2 w-24 text-center'>{entry.number}</p>
-                <button type='button' onClick={() => handleEditEntry(index)}>
-                  <FaEdit className='text-blue-900 text-2xl ml-2' />
+                <p className="rounded-lg border-2 border-solid border-gray-200 mx-2 w-32">{phonebook.name}</p>
+                <p className="rounded-lg border-2 border-solid border-gray-200 mx-2 w-24 text-center">{phonebook.number}</p>
+                <button type="button" onClick={() => handleEditEntry(index)}>
+                  <FaEdit className="text-blue-900 text-2xl ml-2" />
                 </button>
               </>
             )}
-            <button type='button' onClick={() => deleteEntry(entry._id, tabs[activeTab].phonebook, tabs[activeTab].setPhonebook)}>
-              <FaTimes className='text-red-500 text-2xl ml-2' />
-            </button>
           </div>
         ))}
         <form
           onSubmit={(e) =>
-            addEntry(
+            handleAddEntry(
               e,
-              tabs[activeTab].phonebook,
-              tabs[activeTab].setPhonebook,
+              tabs[activeTab].phonebookType,
               tabs[activeTab].name,
               tabs[activeTab].number,
               tabs[activeTab].setName,
@@ -218,21 +171,21 @@ const Contacts = () => {
             {tabs[activeTab].showForm && (
               <>
                 <input
-                  type='text'
-                  placeholder='Name'
+                  type="text"
+                  placeholder="Name"
                   value={tabs[activeTab].name}
                   onChange={(e) => tabs[activeTab].setName(e.target.value)}
-                  className='rounded-lg border-2 border-solid border-gray-200 mx-2 w-32'
+                  className="rounded-lg border-2 border-solid border-gray-200 mx-2 w-32"
                 />
                 <input
-                  type='number'
-                  placeholder='7044670444'
+                  type="number"
+                  placeholder="7044670444"
                   value={tabs[activeTab].number}
                   onChange={(e) => tabs[activeTab].setNumber(e.target.value)}
-                  className='rounded-lg border-2 border-solid border-gray-200 mx-2 w-24 text-center'
+                  className="rounded-lg border-2 border-solid border-gray-200 mx-2 w-24 text-center"
                 />
-                <button type='submit'>
-                  <FaAddressCard className='text-blue-900 text-2xl ml-2' />
+                <button type="submit">
+                  <FaAddressCard className="text-blue-900 text-2xl ml-2" />
                 </button>
               </>
             )}

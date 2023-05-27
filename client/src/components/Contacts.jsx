@@ -61,7 +61,7 @@ const Contacts = () => {
     }
     if (response.ok) {
       
-      dispatch({ type: 'CREATE_PHONEBOOK', payload: { phonebookType, entry: newerEntry } });
+      dispatch({ type: 'CREATE_PHONEBOOK', phonebookType, entry: newerEntry  });
       setName('');
       setNumber('');
       setShowForm(false);
@@ -82,13 +82,13 @@ const Contacts = () => {
 
   const handleEntryNameChange = (index, value) => {
     const updatedPhonebooks = [...phonebooks];
-    updatedPhonebooks[index].name = value;
+    updatedPhonebooks[index] = { ...updatedPhonebooks[index], name: value};
     dispatch({ type: 'SET_PHONEBOOK', payload: updatedPhonebooks });
   };
 
   const handleEntryNumberChange = (index, value) => {
     const updatedPhonebooks = [...phonebooks];
-    updatedPhonebooks[index].number = value;
+    updatedPhonebooks[index] = { ...updatedPhonebooks[index], number: value};
     dispatch({ type: 'SET_PHONEBOOK', payload: updatedPhonebooks });
   };
 
@@ -97,6 +97,8 @@ const Contacts = () => {
   };
 
   const handleSaveEntry = () => {
+    const updatedPhonebooks = [...phonebooks]
+    dispatch({ type: 'SET_PHONEBOOK', payload: updatedPhonebooks })
     setEditIndex(-1);
   };
 
@@ -120,7 +122,7 @@ const Contacts = () => {
       </div>
       <FaPlus className="text-blue-900 mr-2 rounded-lg mt-8 ml-4" onClick={() => changeShow(activeTab)} />
       <div className="mt-4">
-        {Object.values(phonebooks).map((phonebook, index) => (
+        {phonebooks.map((phonebook, index) => (
           <div key={index} className="flex items-center justify-center mt-2">
             {editIndex === index ? (
               <>

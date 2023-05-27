@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 export const PhonebookContext = createContext()
 
-export const phonebookReducer = (state = { phonebooks: []}, action) => {
+export const phonebookReducer = (state = { phonebooks: [] }, action) => {
   const newPhonebooks = Array.isArray(action.payload) ? action.payload : [action.payload]
   switch (action.type) {
     case 'SET_PHONEBOOK': 

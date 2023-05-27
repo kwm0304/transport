@@ -3,7 +3,8 @@ const {
   createPhonebook,
   getPhonebook,
   deletePhonebook,
-  updatePhonebook
+  updatePhonebook,
+  getPhonebooks
 } = require('../controllers/phonebookController')
 const requireAuth = require('../middleware/requireAuth')
 const router = express.Router()
@@ -11,6 +12,7 @@ const router = express.Router()
 
 router.use(requireAuth)
 router.get('/:id', getPhonebook)
+router.get('/', getPhonebooks)
 router.post('/', createPhonebook)
 router.delete('/:id', deletePhonebook)
 router.patch('/:id', updatePhonebook)

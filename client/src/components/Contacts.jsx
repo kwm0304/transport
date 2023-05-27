@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaAddressCard, FaPlus, FaEdit, FaCheck, FaTimes } from 'react-icons/fa';
 
 const Contacts = () => {
@@ -38,13 +38,73 @@ const Contacts = () => {
     }
   ];
 
-  const handleAddEntry = (e, phonebook, setPhonebook, name, number, setName, setNumber, setShowForm) => {
+  useEffect(() => {
+    fetchPhonebooks();
+  }, []);
+
+  const fetchPhonebooks = async () => {
+    try {
+      const response = await fetch('/api/phonebooks');
+      const data = await response.json();
+      setStorePhonebook(data.storePhonebook);
+      setCustomerPhonebook(data.customerPhonebook);
+    } catch (error) {
+      console.error('Error fetching phonebooks:', error);
+    }
+  };
+
+  const addEntry = async (e, phonebook, setPhonebook, name, number, setName, setNumber, setShowForm) => {
     e.preventDefault();
     const newEntry = { name, number };
-    setPhonebook([...phonebook, newEntry]);
-    setName('');
-    setNumber('');
-    setShowForm(false);
+
+    try {
+      const response = await fetch('/api/phonebooks', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newEntry),
+      });
+
+      const addedEntry = await response.json();
+      setPhonebook([...phonebook, addedEntry]);
+      setName('');
+      setNumber('');
+      setShowForm(false);
+    } catch (error) {
+      console.error('Error adding phonebook entry:', error);
+    }
+  };
+
+  const deleteEntry = async (id, phonebook, setPhonebook) => {
+    try {
+      await fetch(`/api/phonebooks/${id}`, {
+        method: 'DELETE',
+      });
+
+      setPhonebook(phonebook.filter((entry) => entry._id !== id));
+    } catch (error) {
+      console.error('Error deleting phonebook entry:', error);
+    }
+  };
+
+  const updateEntry = async (id, updatedEntry, phonebook, setPhonebook) => {
+    try {
+      const response = await fetch(`/api/phonebooks/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedEntry),
+      });
+
+      const updatedEntryData = await response.json();
+      setPhonebook((prevPhonebook) =>
+        prevPhonebook.map((entry) => (entry._id === id ? updatedEntryData : entry))
+      );
+    } catch (error) {
+      console.error('Error updating phonebook entry:', error);
+    }
   };
 
   const handleTabClick = (index) => {
@@ -77,7 +137,8 @@ const Contacts = () => {
     setEditIndex(index);
   };
 
-  const handleSaveEntry = () => {
+  const handleSaveEntry = (id, updatedEntry) => {
+    updateEntry(id, updatedEntry, tabs[activeTab].phonebook, tabs[activeTab].setPhonebook);
     setEditIndex(-1);
   };
 
@@ -89,7 +150,6 @@ const Contacts = () => {
     <>
       <h2 className='text-center text-blue-900 font-bold text-2xl pt-8'>Contacts</h2>
       <div className="flex rounded-lg pt-6">
-        
         {tabs.map((tab, index) => (
           <button
             key={index}
@@ -103,7 +163,7 @@ const Contacts = () => {
       <FaPlus className='text-blue-900 mr-2 rounded-lg mt-8 ml-4' onClick={() => changeShow(activeTab)} />
       <div className='mt-4'>
         {tabs[activeTab].phonebook.map((entry, index) => (
-          <div key={index} className='flex items-center justify-center mt-2'>
+          <div key={entry._id} className='flex items-center justify-center mt-2'>
             {editIndex === index ? (
               <>
                 <input
@@ -118,7 +178,7 @@ const Contacts = () => {
                   onChange={(e) => handleEntryNumberChange(index, e.target.value)}
                   className='rounded-lg border-2 border-solid border-gray-200 mx-2 w-24 text-center'
                 />
-                <button type='button' onClick={handleSaveEntry}>
+                <button type='button' onClick={() => handleSaveEntry(entry._id, entry)}>
                   <FaCheck className='text-green-500 text-2xl ml-2' />
                 </button>
                 <button type='button' onClick={handleCancelEdit}>
@@ -134,11 +194,14 @@ const Contacts = () => {
                 </button>
               </>
             )}
+            <button type='button' onClick={() => deleteEntry(entry._id, tabs[activeTab].phonebook, tabs[activeTab].setPhonebook)}>
+              <FaTimes className='text-red-500 text-2xl ml-2' />
+            </button>
           </div>
         ))}
         <form
           onSubmit={(e) =>
-            handleAddEntry(
+            addEntry(
               e,
               tabs[activeTab].phonebook,
               tabs[activeTab].setPhonebook,

@@ -1,4 +1,4 @@
-const Phonebook = require('../models/phonebook')
+const Phonebook = require('../models/phonebookModel')
 const mongoose = require('mongoose')
 
 const getPhonebooks = async (req, res) => {

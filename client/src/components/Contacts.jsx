@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { FaAddressCard, FaPlus, FaEdit, FaCheck, FaTimes } from 'react-icons/fa';
 
 const Contacts = () => {
@@ -44,7 +44,8 @@ const Contacts = () => {
 
   const fetchPhonebooks = async () => {
     try {
-      const response = await fetch('/api/phonebooks');
+      const response = await fetch('/api/phonebooks/');
+      console.log('res', response)
       const data = await response.json();
       setStorePhonebook(data.storePhonebook);
       setCustomerPhonebook(data.customerPhonebook);
@@ -63,7 +64,7 @@ const Contacts = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(newEntry),
+        body: JSON.stringify({newEntry}),
       });
 
       const addedEntry = await response.json();

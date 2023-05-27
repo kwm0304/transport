@@ -13,8 +13,6 @@ const phonebookSchema = new Schema({
     type: Date,
     default: Date.now
   }
-})
+}, {timestamps: true})
 
-const Phonebook = mongoose.model('Phonebook', phonebookSchema)
-
-module.exports = Phonebook
+module.exports = mongoose.model('Phonebook', phonebookSchema)

@@ -4,7 +4,8 @@ import Modal from 'react-modal'
 import PropTypes from 'prop-types'
 
 
-function EventCard ({ isOpen, onClose, store, address, startTime, endTime, firstName, lastName, price, id, phoneNumber }) {
+function EventCard ({ isOpen, onClose, props }) {
+  const { store, address, startTime, endTime, firstName, lastName, price, id, phoneNumber } = props
   const cleanStartTime = (startTime.toLocaleString()).split(' ')
   const cleanEndTime = (endTime.toLocaleString()).split(' ')
   console.log('id', id)
@@ -57,15 +58,17 @@ return(
 EventCard.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  store: PropTypes.string.isRequired,
-  address: PropTypes.string.isRequired,
-  startTime: PropTypes.string.isRequired,
-  endTime: PropTypes.string.isRequired,
-  firstName: PropTypes.string.isRequired,
-  lastName: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
-  id: PropTypes.string.isRequired,
-  phoneNumber: PropTypes.string.isRequired
+  props: PropTypes.shape({
+    store: PropTypes.string.isRequired,
+    address: PropTypes.string.isRequired,
+    startTime: PropTypes.string.isRequired,
+    endTime: PropTypes.string.isRequired,
+    firstName: PropTypes.string.isRequired,
+    lastName: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    id: PropTypes.string.isRequired,
+    phoneNumber: PropTypes.string.isRequired
+  }).isRequired
 };
 
 export default EventCard

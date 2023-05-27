@@ -171,12 +171,6 @@ function EventModal  ({ isOpen, onClose, onEventAdded })  {
       </div>
      </Modal>
   )
-
 }
 
-EventModal.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-  onEventAdded: PropTypes.func.isRequired
-}
 export default EventModal

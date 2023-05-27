@@ -5,8 +5,9 @@ import DateTime from 'react-datetime'
 import Modal from 'react-modal'
 import { GrClose } from 'react-icons/gr'
 import moment from 'moment'
+import PropTypes from 'prop-types'
 
-export default function EventModal  ({ isOpen, onClose, onEventAdded })  {
+function EventModal  ({ isOpen, onClose, onEventAdded })  {
   const { dispatch } = useEventContext()
   const { user } = useAuthContext()
     const [title,setTitle]=useState('')
@@ -53,7 +54,9 @@ export default function EventModal  ({ isOpen, onClose, onEventAdded })  {
     const newEvent = await response.json()
     console.log('json', newEvent)
     if (!response.ok) {
+      console.error('Error', error)
       setError(newEvent.error)
+      console.log('emptyField', emptyField)
       setEmptyField(newEvent.emptyField)
     }
     if (response.ok) {
@@ -170,3 +173,10 @@ export default function EventModal  ({ isOpen, onClose, onEventAdded })  {
   )
 
 }
+
+EventModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onEventAdded: PropTypes.func.isRequired
+}
+export default EventModal

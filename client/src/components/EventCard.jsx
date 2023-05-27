@@ -1,11 +1,13 @@
 import { FaDirections, FaPhoneAlt } from 'react-icons/fa'
 import { AiOutlineClose } from 'react-icons/ai'
 import Modal from 'react-modal'
+import PropTypes from 'prop-types'
 
-export default function EventCard ({ isOpen, onClose, props }) {
-  const { store, address, startTime, endTime, firstName, lastName, price, id, phoneNumber } = props
+
+function EventCard ({ isOpen, onClose, store, address, startTime, endTime, firstName, lastName, price, id, phoneNumber }) {
   const cleanStartTime = (startTime.toLocaleString()).split(' ')
   const cleanEndTime = (endTime.toLocaleString()).split(' ')
+  console.log('id', id)
   
 return(
   <Modal isOpen={isOpen} onRequestClose={onClose}>
@@ -51,3 +53,19 @@ return(
   </Modal>
 )
 }
+
+EventCard.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  store: PropTypes.string.isRequired,
+  address: PropTypes.string.isRequired,
+  startTime: PropTypes.string.isRequired,
+  endTime: PropTypes.string.isRequired,
+  firstName: PropTypes.string.isRequired,
+  lastName: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
+  id: PropTypes.string.isRequired,
+  phoneNumber: PropTypes.string.isRequired
+};
+
+export default EventCard

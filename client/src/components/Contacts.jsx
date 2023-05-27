@@ -59,7 +59,7 @@ const Contacts = () => {
     if (!response.ok) {
       setError(newerEntry.error);
     }
-    if (response.ok && user) {
+    if (response.ok) {
       
       dispatch({ type: 'CREATE_PHONEBOOK', payload: { phonebookType, entry: newerEntry } });
       setName('');
@@ -120,8 +120,8 @@ const Contacts = () => {
       </div>
       <FaPlus className="text-blue-900 mr-2 rounded-lg mt-8 ml-4" onClick={() => changeShow(activeTab)} />
       <div className="mt-4">
-        {Object.keys(phonebooks).map((phonebook, index) => (
-          <div key={phonebook.id} className="flex items-center justify-center mt-2">
+        {Object.values(phonebooks).map((phonebook, index) => (
+          <div key={index} className="flex items-center justify-center mt-2">
             {editIndex === index ? (
               <>
                 <input

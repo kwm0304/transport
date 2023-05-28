@@ -19,6 +19,16 @@ const Contacts = () => {
   if (!user) {
     return <div>Loading...</div>
   }
+  
+  const phonebookArray = []
+  for (const number in phonebooks) {
+    if (Object.hasOwnProperty.call(phonebooks, number)) {
+      phonebookArray.push(phonebooks[number])
+    }
+  }
+  console.log('pbarray', phonebookArray)
+  
+  console.log(Array.isArray(phonebooks))
   console.log('pb type', typeof phonebooks)
   const tabs = [
     {
@@ -122,20 +132,20 @@ const Contacts = () => {
       </div>
       <FaPlus className="text-blue-900 mr-2 rounded-lg mt-8 ml-4" onClick={() => changeShow(activeTab)} />
       <div className="mt-4">
-        {phonebooks.map((phonebook, index) => (
-          <div key={index} className="flex items-center justify-center mt-2">
-            {editIndex === index ? (
+        {phonebookArray.map((phonebook, number) => (
+          <div key={number} className="flex items-center justify-center mt-2">
+            {editIndex === number ? (
               <>
                 <input
                   type="text"
                   value={phonebook.name}
-                  onChange={(e) => handleEntryNameChange(index, e.target.value)}
+                  onChange={(e) => handleEntryNameChange(number, e.target.value)}
                   className="rounded-lg border-2 border-solid border-gray-200 mx-2 w-32"
                 />
                 <input
                   type="number"
                   value={phonebook.number}
-                  onChange={(e) => handleEntryNumberChange(index, e.target.value)}
+                  onChange={(e) => handleEntryNumberChange(number, e.target.value)}
                   className="rounded-lg border-2 border-solid border-gray-200 mx-2 w-24 text-center"
                 />
                 <button type="button" onClick={handleSaveEntry}>

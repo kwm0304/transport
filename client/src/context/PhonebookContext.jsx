@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 export const PhonebookContext = createContext()
 
 export const phonebookReducer = (state = { phonebooks: [] }, action) => {
-  const newPhonebooks = Array.isArray(action.payload) ? action.payload : [action.payload]
   switch (action.type) {
     case 'SET_PHONEBOOK': 
     return {
@@ -14,8 +13,16 @@ export const phonebookReducer = (state = { phonebooks: [] }, action) => {
     case 'CREATE_PHONEBOOK' : 
     return {
       ...state,
-      phonebooks: [...state.phonebooks, ...newPhonebooks]
+      phonebooks: {
+        ...state.phonebooks,
+        [action.phonebookType]: [...state.phonebooks[action.phonebookType], action.entry],
+      }
     }
+    case 'UPDATE_PHONEBOOK':
+      return {
+        ...state.phonebooks,
+        [action.phonebookType]: action.payload, 
+      }
     case 'DELETE_PHONEBOOK':
     return {
       ...state,
@@ -27,7 +34,7 @@ export const phonebookReducer = (state = { phonebooks: [] }, action) => {
 }
 
 export const PhonebookContextProvider = ({ children }) => {
-  const [phonebooks, dispatch] = useReducer(phonebookReducer, {phonebooks:[]})
+  const [phonebooks, dispatch] = useReducer(phonebookReducer, { phonebooks:[] })
   return (
     <PhonebookContext.Provider value={{phonebooks, dispatch}}>
       { children }

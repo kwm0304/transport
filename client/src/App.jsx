@@ -10,6 +10,7 @@ import Finances from './components/Finances'
 import NoMatch from './components/NoMatch'
 import StartOfDay from './components/StartOfDay'
 import EventCard from './components/EventCard'
+import Contacts from './components/ContactsForm'
 
 //imports
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
@@ -17,7 +18,6 @@ import Modal from 'react-modal'
 Modal.setAppElement('#root')
 
 import { useAuthContext } from './hooks/useAuth'
-import Contacts from './components/Contacts'
 
 function App() {
   const { user } = useAuthContext()

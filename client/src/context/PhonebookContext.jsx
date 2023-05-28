@@ -1,47 +1,33 @@
 import { createContext, useReducer } from 'react'
-import PropTypes from 'prop-types'
 
 export const PhonebookContext = createContext()
-
-export const phonebookReducer = (state = { phonebooks: [] }, action) => {
+export const phonebookReducer = (state, action) => {
   switch (action.type) {
-    case 'SET_PHONEBOOK': 
-    return {
-      ...state,
+    case 'SET_PHONEBOOKS': 
+    return { 
       phonebooks: action.payload
     }
-    case 'CREATE_PHONEBOOK' : 
+  case 'CREATE_PHONEBOOK': 
     return {
-      ...state,
-      phonebooks: {
-        ...state.phonebooks,
-        [action.phonebookType]: [...state.phonebooks[action.phonebookType], action.entry],
-      }
+      phonebooks: [action.payload, ...state.phonebooks]
     }
-    case 'UPDATE_PHONEBOOK':
-      return {
-        ...state.phonebooks,
-        [action.phonebookType]: action.payload, 
-      }
-    case 'DELETE_PHONEBOOK':
+  case 'DELETE_WORKOUTS' :
     return {
-      ...state,
-      phonebooks: state.phonebooks.filter((e) => e._id !== action.payload._id),
-    };
-      default:
-        return state
+      phonebooks: state.phonebooks.filter((p) => p._id !== action.payload._id)
+    }
+    default:
+      return state
   }
 }
 
 export const PhonebookContextProvider = ({ children }) => {
-  const [phonebooks, dispatch] = useReducer(phonebookReducer, { phonebooks:[] })
+  const [state, dispatch] = useReducer(phonebookReducer, {
+    phonebooks: null
+  })
+
   return (
-    <PhonebookContext.Provider value={{phonebooks, dispatch}}>
+    <PhonebookContext.Provider value={{...state, dispatch}}>
       { children }
     </PhonebookContext.Provider>
   )
-}
-
-PhonebookContextProvider.propTypes = {
-  children: PropTypes.node.isRequired
 }

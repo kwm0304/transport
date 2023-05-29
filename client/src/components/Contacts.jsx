@@ -33,13 +33,12 @@ const Contacts = () => {
     <ContactsForm />
     </div>
     <p>Helllooooo</p>
-    <div>
+    <div className='mapping'>
       {phonebooks && phonebooks.map(phonebook => (
         <ContactDetails key={phonebook._id} phonebook={phonebook} />
       ))}
       
     </div>
-    
     </>
     
   )

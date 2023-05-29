@@ -3,11 +3,12 @@ import { useAuthContext } from '../hooks/useAuth'
 import { usePhonebookContext } from '../hooks/usePhonebookContext'
 import { FaPlus, FaUserAlt, FaPhoneAlt } from 'react-icons/fa'
 
-const ContactsForm = () => {
+const ContactForm = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
   const [emptyFields, setEmptyFields] = useState([])
+  const [showForm, setShowForm] = useState(false)
   const { phonebooks, dispatch } = usePhonebookContext()
   const { user } = useAuthContext()
 
@@ -40,6 +41,7 @@ const ContactsForm = () => {
       setNewNumber('')
       setErrorMessage(null)
       setEmptyFields([])
+      setShowForm(false)
       console.log('New contact added', json)
       dispatch({type: 'CREATE_PHONEBOOK', payload: json})
       console.log('dispatch', dispatch)
@@ -48,13 +50,18 @@ const ContactsForm = () => {
   console.log('Empty Fields', emptyFields)
   console.log('PB', {phonebooks})
 
+  const handleFormShow = () => {
+    setShowForm(!showForm)
+  }
+
   return (
     <>
-    <form className='text-blue-900' onSubmit={handleAddContact}>
       <h2 className='text-center font-bold text-2xl'>Contacts</h2>
       <div className="flex justify-end mr-8 text-blue-900 text-2xl">
-      <FaPlus />
+      <FaPlus onClick={handleFormShow}/>
       </div>
+      {showForm && (
+      <form className='text-blue-900' onSubmit={handleAddContact}>
       <div className="flex items-center gap-2 mt-12 justify-center">
       <label><FaUserAlt /></label>
       <input 
@@ -78,8 +85,9 @@ const ContactsForm = () => {
       <button className='bg-blue-900 text-white rounded-lg p-1 mt-2'>Create Contact</button>
       </div>
     </form>
+      )}
     </>
   )
 }
 
-export default ContactsForm
+export default ContactForm

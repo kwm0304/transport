@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
 import ContactDetails from './ContactDetails'
-import ContactsForm from './ContactsForm'
+import ContactForm from './ContactsForm'
 import { usePhonebookContext } from '../hooks/usePhonebookContext'
 import { useAuthContext } from '../hooks/useAuth'
-
+//need to have contactForm only show onClick
 const Contacts = () => {
   const { phonebooks, dispatch } = usePhonebookContext()
   const { user } = useAuthContext()
@@ -24,20 +24,18 @@ const Contacts = () => {
       }
     }
     if (user)
-    fetchContacts()
+    {fetchContacts()}
   }, [dispatch, user])
-
+//Auth is happening in ContactsForm
   return(
     <>
     <div>
-    <ContactsForm />
+    <ContactForm />
     </div>
-    <p>Helllooooo</p>
     <div className='mapping'>
       {phonebooks && phonebooks.map(phonebook => (
         <ContactDetails key={phonebook._id} phonebook={phonebook} />
       ))}
-      
     </div>
     </>
     

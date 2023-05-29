@@ -1,19 +1,23 @@
 import { usePhonebookContext } from "../hooks/usePhonebookContext";
 import { useAuthContext } from "../hooks/useAuth";
 import { FaRegTrashAlt } from "react-icons/fa";
+import PropTypes from 'prop-types'
 
 const ContactDetails = ({ phonebook }) => {
   const { phonebooks, dispatch } = usePhonebookContext()
   const { user } = useAuthContext()
   console.log(phonebooks)
-  const handleClick = async () => {
+  //returning 404 not found, but array did shrink from 25 to 21
+  const handleClick = async (e) => {
+    e.preventDefault()
     if (!user) {return}
-    const response = await fetch('/api/contacts' + phonebook._id, {
+    const response = await fetch('/api/contacts/:' + phonebook._id, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${user.token}`
       }
     })
+    console.log('delete response', response)
     const json = await response.json()
     if (response.ok) {
       dispatch({type: 'DELETE_PHONEBOOK', payload: json})
@@ -21,11 +25,17 @@ const ContactDetails = ({ phonebook }) => {
   }
 
   return(
-    <div className="phonebook-details flex justify-center items-center py-2">
-      <a href={'tel'+`${phonebook.newNumber}`}><h4>{phonebook.newName}</h4></a>
-      <FaRegTrashAlt className="text-blue-900" onClick={handleClick}/>
+    <>
+    <div className="phonebook-details flex justify-between items-center py-2 gap-2 mx-4">
+      <a href={'tel'+`${phonebook.newNumber}`}><h4 className="capitalize">{phonebook.newName}</h4></a>
+      <button onClick={handleClick}><FaRegTrashAlt className="text-blue-900" /></button>
     </div>
+    </>
   )
+}
+
+ContactDetails.propTypes = {
+  phonebook: PropTypes.node.isRequired
 }
 
 export default ContactDetails

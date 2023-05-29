@@ -10,7 +10,7 @@ import Finances from './components/Finances'
 import NoMatch from './components/NoMatch'
 import StartOfDay from './components/StartOfDay'
 import EventCard from './components/EventCard'
-import Contacts from './components/ContactsForm'
+import Contacts from './components/Contacts'
 
 //imports
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'

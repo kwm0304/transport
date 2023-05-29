@@ -68,7 +68,7 @@ EventCard.propTypes = {
     price: PropTypes.number.isRequired,
     id: PropTypes.string.isRequired,
     phoneNumber: PropTypes.string.isRequired
-  }).isRequired
+  })
 };
 
 export default EventCard

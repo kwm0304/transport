@@ -5,7 +5,6 @@ import DateTime from 'react-datetime'
 import Modal from 'react-modal'
 import { GrClose } from 'react-icons/gr'
 import moment from 'moment'
-import PropTypes from 'prop-types'
 
 function EventModal  ({ isOpen, onClose, onEventAdded })  {
   const { dispatch } = useEventContext()

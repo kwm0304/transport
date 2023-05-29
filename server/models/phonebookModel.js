@@ -1,11 +1,11 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const phonebookSchema = new Schema({
-  name: {
+  newName: {
     type: String,
     required: true
   },
-  number: {
+  newNumber: {
     type: String,
     required: true
   },

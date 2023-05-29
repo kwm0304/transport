@@ -9,8 +9,9 @@ export const phonebookReducer = (state, action) => {
     }
   case 'CREATE_PHONEBOOK': 
     return {
-      phonebooks: [action.payload, ...state.phonebooks]
+      phonebooks: [action.payload, ...state.phonebooks = []]
     }
+    
   case 'DELETE_WORKOUTS' :
     return {
       phonebooks: state.phonebooks.filter((p) => p._id !== action.payload._id)
@@ -19,7 +20,6 @@ export const phonebookReducer = (state, action) => {
       return state
   }
 }
-
 export const PhonebookContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(phonebookReducer, {
     phonebooks: null
@@ -31,3 +31,4 @@ export const PhonebookContextProvider = ({ children }) => {
     </PhonebookContext.Provider>
   )
 }
+//adding multiple contacts 

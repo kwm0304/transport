@@ -7,11 +7,11 @@ import { useAuthContext } from '../hooks/useAuth'
 const Contacts = () => {
   const { phonebooks, dispatch } = usePhonebookContext()
   const { user } = useAuthContext()
-
+  //need to fire on add number as well, maybe state is better
   useEffect(() => {
     console.log('effect')
     const fetchContacts = async () => {
-      const response = await fetch('/api/contacts/', {
+      const response = await fetch('/api/contacts', {
         headers: {
           'Authorization': `Bearer ${user.token}`
         }
@@ -29,9 +29,12 @@ const Contacts = () => {
 
   return(
     <>
-    <ContactsForm />
     <div>
-      {phonebooks && phonebooks.map((phonebook) => (
+    <ContactsForm />
+    </div>
+    <p>Helllooooo</p>
+    <div>
+      {phonebooks && phonebooks.map(phonebook => (
         <ContactDetails key={phonebook._id} phonebook={phonebook} />
       ))}
       

@@ -3,11 +3,12 @@ import { useAuthContext } from "../hooks/useAuth";
 import { FaRegTrashAlt } from "react-icons/fa";
 
 const ContactDetails = ({ phonebook }) => {
-  const { dispatch } = usePhonebookContext()
+  const { phonebooks, dispatch } = usePhonebookContext()
   const { user } = useAuthContext()
+  console.log(phonebooks)
   const handleClick = async () => {
     if (!user) {return}
-    const response = await fetch('/api/contacts/' + phonebook._id, {
+    const response = await fetch('/api/contacts' + phonebook._id, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${user.token}`

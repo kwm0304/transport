@@ -23,9 +23,9 @@ const createPhonebook = async (req, res) => {
   const { newName, newNumber } = req.body
 
   let emptyFields = []
-  if (!name) {
-    emptyFields.push('name')
-  } if (!number) {
+  if (!newName) {
+    emptyFields.push('newName')
+  } if (!newNumber) {
     emptyFields.push('number')
   } if (emptyFields.length > 0) {
     return res.status(400).json({ error: 'Please fill in all fields', emptyFields })

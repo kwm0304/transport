@@ -24,10 +24,13 @@ const ContactsForm = () => {
       body: JSON.stringify(phonebook),
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${user.token}`
+        'Authorization': `Bearer ${user.token}`,
       }
+      
     })
+    console.log('response', response)
     const json = await response.json()
+    console.log('json', json)
     if (!response.ok) {
       setErrorMessage(json.error)
       setEmptyFields(json.emptyFields)
@@ -39,6 +42,7 @@ const ContactsForm = () => {
       setEmptyFields([])
       console.log('New contact added', json)
       dispatch({type: 'CREATE_PHONEBOOK', payload: json})
+      console.log('dispatch', dispatch)
     }
   }
   console.log('Empty Fields', emptyFields)
@@ -74,8 +78,6 @@ const ContactsForm = () => {
       <button className='bg-blue-900 text-white rounded-lg p-1 mt-2'>Create Contact</button>
       </div>
     </form>
-    
-    
     </>
   )
 }

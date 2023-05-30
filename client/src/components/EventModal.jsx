@@ -50,11 +50,6 @@ function EventModal  ({ isOpen, onClose, onEventAdded })  {
         'Authorization': `Bearer ${user.token}`
       }
     })
-
-    const handleDeleteEvent = () => {
-
-    }
-
     const newEvent = await response.json()
     console.log('json', newEvent)
     if (!response.ok) {
@@ -80,6 +75,8 @@ function EventModal  ({ isOpen, onClose, onEventAdded })  {
     }
     onClose()
   }
+
+  
 
   return(
     <Modal isOpen={isOpen} onRequestClose={onClose} style={modalStyle}>

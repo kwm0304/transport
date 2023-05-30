@@ -44,6 +44,7 @@ const Calendar = () => {
     setModalOpen(true)
   }
   const handleEventClick = (info) => {
+    console.log("CLICK")
       const store = info.event.title
       const price = info.event._def.extendedProps.price
       const address = info.event._def.extendedProps.address
@@ -52,6 +53,9 @@ const Calendar = () => {
       const startTime = info.event._instance.range.start
       const endTime = info.event._instance.range.end
       const phoneNumber = info.event._def.extendedProps.phoneNumber
+      const id = info.event._def.extendedProps._id
+      console.log('info', info)
+      
       setSelectedEvent({
         store,
         price,
@@ -60,11 +64,13 @@ const Calendar = () => {
         lastName,
         startTime,
         endTime,
-        phoneNumber
+        phoneNumber,
+        id
       })
       console.log('START', startTime)
       console.log('starttype', typeof startTime)
-      console.log('SE', {selectedEvent})
+      console.log('SE', selectedEvent)
+      console.log('seid', id)
     setModal2Open(true)
   }
 
@@ -81,10 +87,13 @@ const Calendar = () => {
           last: event.last,
           phoneNumber: event.phoneNumber
         });
+        console.log('ID', event.id)
         const updatedEvents = [...events, event]
         dispatch({ type: 'SET_EVENTS', payload: [updatedEvents]})
       setModalOpen(false);
   };
+  
+  
 
   const handleAddEventClick = () => {
     setModalOpen(true)
@@ -136,7 +145,8 @@ const Calendar = () => {
     <EventCard
     isOpen={modal2Open}
     onClose={handleCloseModal2}
-    props={selectedEvent} />
+    props={selectedEvent} 
+     />
     )}
     </section>
   

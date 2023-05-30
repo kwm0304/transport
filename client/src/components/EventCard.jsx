@@ -3,26 +3,36 @@ import { AiOutlineClose } from 'react-icons/ai'
 import Modal from 'react-modal'
 import PropTypes from 'prop-types'
 import { FaTrash } from 'react-icons/fa'
-import { useEventContext } from "../hooks/useEventContext";
-import { useAuthContext } from "../hooks/useAuth";
-
-
+import { useAuthContext } from '../hooks/useAuth'
+import { useEventContext } from '../hooks/useEventContext'
 
 function EventCard ({ isOpen, onClose, props }) {
-  const { user } = useAuthContext()
-  const { store, address, startTime, endTime, firstName, lastName, price, id, phoneNumber } = props
+  const { store, address, startTime, endTime, firstName, lastName, price, phoneNumber, id } = props
   const cleanStartTime = (startTime.toLocaleString()).split(' ')
   const cleanEndTime = (endTime.toLocaleString()).split(' ')
   console.log('id', id)
+  console.log('idddd', props.id)
+  const { user } = useAuthContext()
+  const { dispatch } = useEventContext()
 
-  const handleDeleteEvent = () => {
-    const deletedEvent = fetch('/api/events/' + event._id, {
+  
+  const handleDeleteEvent = async () => {
+    if (!user) {return}
+    const response = await fetch('/api/events/'+ props.id, {
       method: 'DELETE',
       headers: {
-        'Bearer': `Authorization ${user.token}`
+        'Authorization': `Bearer ${user.token}`
       }
     })
+    const json = await response.json()
+    console.log('DEL JSON', json)
+    if (response.ok) {
+      dispatch({ type: 'DELETE_EVENT', payload: json })
+    }
+    
   }
+  console.log('props.id', props.id)
+  console.log('PROPS', props)
   
 return(
   <Modal isOpen={isOpen} onRequestClose={onClose}>
@@ -76,16 +86,17 @@ EventCard.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   props: PropTypes.shape({
-    store: PropTypes.string.isRequired,
-    address: PropTypes.string.isRequired,
-    startTime: PropTypes.string.isRequired,
-    endTime: PropTypes.string.isRequired,
-    firstName: PropTypes.string.isRequired,
-    lastName: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    id: PropTypes.string.isRequired,
-    phoneNumber: PropTypes.string.isRequired
-  })
+    store: PropTypes.string,
+    address: PropTypes.string,
+    startTime: PropTypes.instanceOf(Date),
+    endTime: PropTypes.instanceOf(Date),
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
+    price: PropTypes.number,
+    id: PropTypes.string, // Add this line
+    phoneNumber: PropTypes.number
+  }).isRequired,
+  
 };
 
 export default EventCard

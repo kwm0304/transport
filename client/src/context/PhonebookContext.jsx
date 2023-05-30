@@ -9,12 +9,12 @@ export const phonebookReducer = (state, action) => {
     }
   case 'CREATE_PHONEBOOK': 
     return {
-      phonebooks: [action.payload, ...state.phonebooks = []]
+      phonebooks: [action.payload, ...state.phonebooks = [...state.phonebooks]]
     }
     
-  case 'DELETE_WORKOUTS' :
+  case 'DELETE_PHONEBOOK' :
     return {
-      phonebooks: state.phonebooks.filter((p) => p._id !== action.payload._id)
+      phonebooks: state.phonebooks.filter((phonebook) => phonebook._id !== action.payload._id)
     }
     default:
       return state

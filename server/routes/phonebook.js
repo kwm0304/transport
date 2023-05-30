@@ -14,7 +14,7 @@ router.use(requireAuth)
 router.get('/:id', getPhonebook)
 router.get('/', getPhonebooks)
 router.post('/', createPhonebook)
-router.delete('/:id', deletePhonebook)
+router.delete('/delete/:id', deletePhonebook)
 router.patch('/:id', updatePhonebook)
 
 module.exports = router

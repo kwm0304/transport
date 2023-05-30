@@ -7,6 +7,7 @@ import { useAuthContext } from '../hooks/useAuth'
 const Contacts = () => {
   const { phonebooks, dispatch } = usePhonebookContext()
   const { user } = useAuthContext()
+  console.log('pbcontacts', usePhonebookContext())
   //need to fire on add number as well, maybe state is better
   useEffect(() => {
     console.log('effect')

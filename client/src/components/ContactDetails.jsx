@@ -4,14 +4,14 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import PropTypes from 'prop-types'
 
 const ContactDetails = ({ phonebook }) => {
-  const { phonebooks, dispatch } = usePhonebookContext()
+  const {  dispatch } = usePhonebookContext()
   const { user } = useAuthContext()
-  console.log(phonebooks)
   //returning 404 not found, but array did shrink from 25 to 21
   const handleClick = async (e) => {
+    console.log("handle trhe dclcik")
     e.preventDefault()
     if (!user) {return}
-    const response = await fetch('/api/contacts/:' + phonebook._id, {
+    const response = await fetch('/api/contacts/delete/' + phonebook._id, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${user.token}`
@@ -23,11 +23,10 @@ const ContactDetails = ({ phonebook }) => {
       dispatch({type: 'DELETE_PHONEBOOK', payload: json})
     }
   }
-
   return(
     <>
     <div className="phonebook-details flex justify-between items-center py-2 gap-2 mx-4">
-      <a href={'tel'+`${phonebook.newNumber}`}><h4 className="capitalize">{phonebook.newName}</h4></a>
+      <a href={'tel:'+`${phonebook.newNumber}`}><h4 className="capitalize">{phonebook.newName}</h4></a>
       <button onClick={handleClick}><FaRegTrashAlt className="text-blue-900" /></button>
     </div>
     </>

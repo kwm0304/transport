@@ -2,19 +2,36 @@ import { FaDirections, FaPhoneAlt } from 'react-icons/fa'
 import { AiOutlineClose } from 'react-icons/ai'
 import Modal from 'react-modal'
 import PropTypes from 'prop-types'
+import { FaTrash } from 'react-icons/fa'
+import { useEventContext } from "../hooks/useEventContext";
+import { useAuthContext } from "../hooks/useAuth";
+
 
 
 function EventCard ({ isOpen, onClose, props }) {
+  const { user } = useAuthContext()
   const { store, address, startTime, endTime, firstName, lastName, price, id, phoneNumber } = props
   const cleanStartTime = (startTime.toLocaleString()).split(' ')
   const cleanEndTime = (endTime.toLocaleString()).split(' ')
   console.log('id', id)
+
+  const handleDeleteEvent = () => {
+    const deletedEvent = fetch('/api/events/' + event._id, {
+      method: 'DELETE',
+      headers: {
+        'Bearer': `Authorization ${user.token}`
+      }
+    })
+  }
   
 return(
   <Modal isOpen={isOpen} onRequestClose={onClose}>
     <div className="grid justify-items-end text-blue-900 font-bold text-xl">
     <AiOutlineClose onClick={onClose}/>
     </div>
+    <button onClick={handleDeleteEvent}>
+    <FaTrash className='text-blue-900'/>
+    </button>
     <h2 className="text-center mt-12  font-bold text-2xl text-blue-900">{store}</h2>
     <div className="flex justify-between mx-12 mt-8 text-blue-900 font-semibold text-xl">
       <div className="flex flex-col gap-2">

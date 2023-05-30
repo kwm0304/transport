@@ -4,14 +4,15 @@ import { useAuthContext } from '../hooks/useAuth'
 import DateTime from 'react-datetime'
 import Modal from 'react-modal'
 import { GrClose } from 'react-icons/gr'
+import { FaTrash } from 'react-icons/fa'
 import moment from 'moment'
 
 function EventModal  ({ isOpen, onClose, onEventAdded })  {
   const { dispatch } = useEventContext()
   const { user } = useAuthContext()
-    const [title,setTitle]=useState('')
-    const [price,setPrice]=useState(0)
-    const [start,setStart]=useState(new Date())
+    const [title,setTitle] =useState('')
+    const [price,setPrice] =useState(0)
+    const [start,setStart] =useState(new Date())
     const [end,setEnd]=useState(new Date())
     const [address,setAddress]=useState('')
     const [first,setFirst] = useState('')
@@ -49,6 +50,10 @@ function EventModal  ({ isOpen, onClose, onEventAdded })  {
         'Authorization': `Bearer ${user.token}`
       }
     })
+
+    const handleDeleteEvent = () => {
+
+    }
 
     const newEvent = await response.json()
     console.log('json', newEvent)

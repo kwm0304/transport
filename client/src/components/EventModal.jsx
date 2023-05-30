@@ -4,7 +4,6 @@ import { useAuthContext } from '../hooks/useAuth'
 import DateTime from 'react-datetime'
 import Modal from 'react-modal'
 import { GrClose } from 'react-icons/gr'
-import { FaTrash } from 'react-icons/fa'
 import moment from 'moment'
 
 function EventModal  ({ isOpen, onClose, onEventAdded })  {
@@ -27,7 +26,6 @@ function EventModal  ({ isOpen, onClose, onEventAdded })  {
       }
     }
 
-    console.log('first', first)
   const handleSubmit = async (e) => {
     e.preventDefault()
     if(!user) {

@@ -7,9 +7,7 @@ import moment from 'moment'
 
 const Finances = () => {
   const { user } = useAuthContext()
-  const { events = {events: []}, dispatch } = useContext(EventContext)
-  console.log(typeof events)
-  console.log('EVENTS', events)
+  const { events = {events: []}, dispatch } = useContext(EventContext)  
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -21,7 +19,7 @@ const Finances = () => {
         })
         const data = await response.json()
         dispatch({ type: 'SET_EVENTS', payload: data })
-        console.log('data', data)
+      
       } catch (error) {
         console.error('Error fetching events', error)
       }

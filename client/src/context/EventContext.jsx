@@ -5,8 +5,6 @@ export const EventContext = createContext()
 
 export const eventReducer = (state = { events: [] }, action) => {
   const newEvents = Array.isArray(action.payload) ? action.payload : [action.payload]
-
-  console.log('STATE', state)
   switch(action.type) {
     case 'SET_EVENTS': 
       return {

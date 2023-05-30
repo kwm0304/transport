@@ -10,11 +10,10 @@ function EventCard ({ isOpen, onClose, props }) {
   const { store, address, startTime, endTime, firstName, lastName, price, phoneNumber, id } = props
   const cleanStartTime = (startTime.toLocaleString()).split(' ')
   const cleanEndTime = (endTime.toLocaleString()).split(' ')
-  console.log('id', id)
-  console.log('idddd', props.id)
   const { user } = useAuthContext()
   const { dispatch } = useEventContext()
 
+  console.log('address', props.address)
   
   const handleDeleteEvent = async () => {
     if (!user) {return}
@@ -25,22 +24,35 @@ function EventCard ({ isOpen, onClose, props }) {
       }
     })
     const json = await response.json()
-    console.log('DEL JSON', json)
     if (response.ok) {
       dispatch({ type: 'DELETE_EVENT', payload: json })
     }
-    
   }
-  console.log('props.id', props.id)
-  console.log('PROPS', props)
   
+  const currentCoordinates = () => {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+          console.log('latitude', latitude, 'longitude', longitude)
+        },
+        error => {
+          console.error("Error getting location", error.message)
+        }
+      )
+    } else {
+      console.log("Geolocation isn't available at this time.")
+    }
+  }
+  console.log(currentCoordinates())
 return(
   <Modal isOpen={isOpen} onRequestClose={onClose}>
     <div className="grid justify-items-end text-blue-900 font-bold text-xl">
-    <AiOutlineClose onClick={onClose}/>
+    <AiOutlineClose onClick={onClose} className='text-xl'/>
     </div>
     <button onClick={handleDeleteEvent}>
-    <FaTrash className='text-blue-900'/>
+    <FaTrash className='text-blue-900 text-xl'/>
     </button>
     <h2 className="text-center mt-12  font-bold text-2xl text-blue-900">{store}</h2>
     <div className="flex justify-between mx-12 mt-8 text-blue-900 font-semibold text-xl">

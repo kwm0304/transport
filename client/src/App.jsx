@@ -11,6 +11,7 @@ import NoMatch from './components/NoMatch'
 import StartOfDay from './components/StartOfDay'
 import EventCard from './components/EventCard'
 import Contacts from './components/Contacts'
+import Expenses from './components/Expenses'
 
 //imports
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
@@ -65,6 +66,10 @@ function App() {
           <Route
           path='/contacts'
           element={<Contacts />}
+          />
+          <Route
+          path='/expenses'
+          element={<Expenses />}
           />
         </Routes>
       </div>

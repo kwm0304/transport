@@ -4,6 +4,7 @@ import { useContext, useEffect } from 'react'
 import { EventContext } from '../context/EventContext'
 import { useAuthContext } from '../hooks/useAuth'
 import moment from 'moment'
+import { Link } from 'react-router-dom'
 
 const Finances = () => {
   const { user } = useAuthContext()
@@ -51,6 +52,9 @@ const Finances = () => {
   }
   return(
     <div className="py-2">
+      <Link to='/expenses'>
+      <button className='text-white bg-blue-900 px-2 py-1 ml-6 rounded-lg font-semibold'>Expenses</button>
+      </Link>
     <h2 className="text-blue-900 font-bold text-3xl text-center mb-10 mt-12">Finances</h2>
     <h3 className="text-center font-bold text-2xl mb-4 text-blue-900">Revenue</h3>
     <div className="grid grid-cols-5  mr-8 gap-4 text-end text-blue-900">

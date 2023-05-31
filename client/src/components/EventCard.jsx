@@ -28,6 +28,20 @@ function EventCard ({ isOpen, onClose, props }) {
       dispatch({ type: 'DELETE_EVENT', payload: json })
     }
   }
+
+  // const getDirections = () => {
+  //   if (!user) return
+  //   fetch('/api/events/key', {
+  //     headers: {
+  //       'Authorization': `Bearer ${user.token}`
+  //   }})
+  //   .then(response => response.json())
+  //   .then(data => {
+  //     const apiKey = data.apiKey
+  //     console.log(apiKey)
+  //   })
+  // }
+
   
   const currentCoordinates = () => {
     if ('geolocation' in navigator) {
@@ -45,7 +59,8 @@ function EventCard ({ isOpen, onClose, props }) {
       console.log("Geolocation isn't available at this time.")
     }
   }
-  console.log(currentCoordinates())
+  console.log(currentCoordinates)
+
 return(
   <Modal isOpen={isOpen} onRequestClose={onClose}>
     <div className="grid justify-items-end text-blue-900 font-bold text-xl">

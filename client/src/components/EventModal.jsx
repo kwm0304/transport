@@ -5,6 +5,7 @@ import DateTime from 'react-datetime'
 import Modal from 'react-modal'
 import { GrClose } from 'react-icons/gr'
 import moment from 'moment'
+import GooglePlacesAutocomplete from 'react-google-autocomplete'
 
 function EventModal  ({ isOpen, onClose, onEventAdded })  {
   const { dispatch } = useEventContext()
@@ -74,7 +75,20 @@ function EventModal  ({ isOpen, onClose, onEventAdded })  {
     onClose()
   }
 
-  
+  const getDirections = () => {
+    if (!user) return
+    fetch('/api/events/key', {
+      headers: {
+        'Authorization': `Bearer ${user.token}`
+    }})
+    .then(response => response.json())
+    .then(data => {
+      const apiKey = data.apiKey
+      console.log({apiKey})
+      console.log('type', typeof apiKey)
+    })
+  }
+  console.log('git', getDirections())
 
   return(
     <Modal isOpen={isOpen} onRequestClose={onClose} style={modalStyle}>
@@ -119,6 +133,7 @@ function EventModal  ({ isOpen, onClose, onEventAdded })  {
         </div>
         <div className="flex flex-cols-2 justify-center my-2 mx-2">
           <label htmlFor="address" className="w-20">Address</label>
+          
           <input
           placeholder="1234 5th St."
           name='address'

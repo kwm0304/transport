@@ -80,6 +80,18 @@ const updateEvent = async(req, res) => {
   res.status(200).json(event)
 }
 
+const getKey = async (req, res) => {
+  const { id } = req.params
+  if (!id) {
+    return res.status(404).json({ error: 'Nope' })
+  }
+  const apiKey = process.env.GOOGLE_MAPS_API_KEY;
+  if (!apiKey) {
+    return res.status(400).json({ error: 'Cannot get key'})
+  }
+  res.status(200).json(apiKey)
+};
+
 module.exports = {
-  createEvent, getEvent, getEvents, deleteEvent, updateEvent
+  createEvent, getEvent, getEvents, deleteEvent, updateEvent, getKey
 }

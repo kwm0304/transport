@@ -4,7 +4,8 @@ const {
   getEvents,
   getEvent,
   deleteEvent,
-  updateEvent
+  updateEvent,
+  getKey
 } = require('../controllers/eventController')
 const requireAuth = require('../middleware/requireAuth')
 const router = express.Router()
@@ -15,5 +16,6 @@ router.get('/:id', getEvent)
 router.post('/', createEvent)
 router.delete('/:id', deleteEvent)
 router.patch('/:id', updateEvent)
+router.get('/key', getKey)
 
 module.exports = router

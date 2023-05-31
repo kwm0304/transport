@@ -104,6 +104,9 @@ const Calendar = () => {
     center: 'dayGridMonth,timeGridWeek,timeGridDay,listDay'
   }
 
+  const key = import.meta.env;
+  console.log('key', {key})
+
   return (
     <section>
     <div className='text-blue-900 font-bold mx-1 mt-12' style={{ position: "relative", zIndex: 0}}>

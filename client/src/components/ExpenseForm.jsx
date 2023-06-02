@@ -9,7 +9,7 @@ const ExpenseForm = () => {
   const [error, setError] = useState(null)
   const [emptyFields, setEmptyFields] = useState([])
   const [showForm, setShowForm] = useState(false)
-  const { expenses, dispatch } = useExpenseContext()
+  const {  dispatch } = useExpenseContext()
   const { user } = useAuthContext()
 
   const handleSubmit = async (e) => {
@@ -34,19 +34,21 @@ const ExpenseForm = () => {
       setEmptyFields(json.emptyFields)
     }
     if (response.ok) {
-      setAmount('')
+      dispatch({type: 'CREATE_EXPENSE', payload: json})
+      setAmount(0)
       setType(null)
       setError(null)
       setEmptyFields([])
       setShowForm(false)
       console.log('New expense added')
-      dispatch({type: 'CREATE_EXPENSE', payload: json})
       console.log('expense dispatch', dispatch)
     }
   }
   const handleShowForm = () => {
     setShowForm(!showForm)
   }
+  console.log(emptyFields)
+  console.log('amount', amount)
 return(
   <>
   <h2 className='text-center text-blue-900 text-2xl mt-8 font-bold'>Expenses</h2>

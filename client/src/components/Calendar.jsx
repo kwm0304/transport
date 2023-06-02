@@ -20,7 +20,7 @@ const Calendar = () => {
   const [modalOpen, setModalOpen] = useState(false)
   const [modal2Open, setModal2Open] = useState(false)
   const calendarRef = useRef(null)
-  const { events=[], dispatch } = useContext(EventContext)
+  const { events=[], dispatch1 } = useContext(EventContext)
   const [selectedEvent, setSelectedEvent] = useState(null)
   
   useEffect(() => {
@@ -32,13 +32,13 @@ const Calendar = () => {
       });
       if (response.ok) {
         const json = await response.json();
-        dispatch({ type: 'SET_EVENTS', payload: json });
+        dispatch1({ type: 'SET_EVENTS', payload: json });
       }
     };
     if (user) {
       fetchEvents();
     }
-  }, [dispatch, user]);
+  }, [dispatch1, user]);
 
   const handleDateClick = () => {
     setModalOpen(true)
@@ -82,7 +82,7 @@ const Calendar = () => {
           phoneNumber: event.phoneNumber
         });
         const updatedEvents = [...events, event]
-        dispatch({ type: 'SET_EVENTS', payload: [updatedEvents]})
+        dispatch1({ type: 'SET_EVENTS', payload: [updatedEvents]})
       setModalOpen(false);
   };
 

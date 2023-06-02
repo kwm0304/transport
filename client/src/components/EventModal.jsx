@@ -8,7 +8,7 @@ import moment from 'moment'
 import GooglePlacesAutocomplete from 'react-google-autocomplete'
 
 function EventModal  ({ isOpen, onClose, onEventAdded })  {
-  const { dispatch } = useEventContext()
+  const { dispatch1 } = useEventContext()
   const { user } = useAuthContext()
     const [title,setTitle] =useState('')
     const [price,setPrice] =useState(0)
@@ -70,7 +70,7 @@ function EventModal  ({ isOpen, onClose, onEventAdded })  {
       setEmptyField([])
       console.log('New Event added', newEvent)
       onEventAdded(newEvent)
-      dispatch({ type: 'CREATE_EVENT', payload: newEvent })
+      dispatch1({ type: 'CREATE_EVENT', payload: newEvent })
     }
     onClose()
   }

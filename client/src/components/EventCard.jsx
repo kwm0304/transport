@@ -11,7 +11,7 @@ function EventCard ({ isOpen, onClose, props }) {
   const cleanStartTime = (startTime.toLocaleString()).split(' ')
   const cleanEndTime = (endTime.toLocaleString()).split(' ')
   const { user } = useAuthContext()
-  const { dispatch } = useEventContext()
+  const { dispatch1 } = useEventContext()
 
   console.log('address', props.address)
   
@@ -25,7 +25,7 @@ function EventCard ({ isOpen, onClose, props }) {
     })
     const json = await response.json()
     if (response.ok) {
-      dispatch({ type: 'DELETE_EVENT', payload: json })
+      dispatch1({ type: 'DELETE_EVENT', payload: json })
     }
   }
 

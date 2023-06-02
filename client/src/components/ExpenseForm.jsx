@@ -5,7 +5,7 @@ import { FaPlus } from "react-icons/fa"
 
 const ExpenseForm = () => {
   const [amount, setAmount] = useState(null)
-  const [type, setType] = useState('other')
+  const [type, setType] = useState('')
   const [error, setError] = useState(null)
   const [emptyFields, setEmptyFields] = useState([])
   const [showForm, setShowForm] = useState(false)
@@ -56,6 +56,7 @@ return(
     <div className="flex mt-4 ml-6">
       <label className="font-semibold">Add Expense</label>
       <select className="ml-4 border-2 border-solid border-gray-300" onChange={(e) => setType(e.target.value)}>
+        <option value=''></option>
         <option value='fuel'>Fuel</option>
         <option value='food'>Food</option>
         <option value='repair'>Repair</option>
@@ -68,6 +69,8 @@ return(
       <button className='bg-blue-900 flex items-center justify-center text-center text-white rounded-lg p-1 ml-2 text-xl rounded-full w-8 h-8'><FaPlus /></button>
       </div>
     </div>
+    {error && <div className="error text-center text-red-500 font-semibold">{error}</div>}
+
   </form>
       )}
   </>

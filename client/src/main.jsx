@@ -6,13 +6,16 @@ import { EventContextProvider } from './context/EventContext.jsx'
 import { AuthContextProvider } from './context/AuthContext.jsx'
 import "react-datetime/css/react-datetime.css"
 import { PhonebookContextProvider } from './context/PhonebookContext.jsx'
+import { ExpenseContextProvider } from './context/ExpenseContext.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <AuthContextProvider>
       <EventContextProvider>
         <PhonebookContextProvider>
-          <App />
+          <ExpenseContextProvider>
+            <App />
+          </ExpenseContextProvider>
         </PhonebookContextProvider>
       </EventContextProvider>
     </AuthContextProvider>

@@ -13,7 +13,7 @@ export const expenseReducer = (state, action) => {
     }
     case 'DELETE_EXPENSE':
       return {
-        phonebooks: state.phonebooks.filter((expense) => expense._id !== action.payload._id)
+        expenses: state.expenses.filter((expense) => expense._id !== action.payload._id)
       }
     default:
       return state

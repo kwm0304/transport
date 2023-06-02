@@ -8,7 +8,7 @@ const ContactDetails = ({ phonebook }) => {
   const { user } = useAuthContext()
   //returning 404 not found, but array did shrink from 25 to 21
   const handleClick = async (e) => {
-    console.log("handle trhe dclcik")
+    console.log("handle clcik")
     e.preventDefault()
     if (!user) {return}
     const response = await fetch('/api/contacts/delete/' + phonebook._id, {

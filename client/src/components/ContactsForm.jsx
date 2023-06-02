@@ -20,7 +20,7 @@ const ContactForm = () => {
       return
     }
     const phonebook = {newName, newNumber}
-    const response = await fetch('api/contacts', {
+    const response = await fetch('/api/contacts', {
       method: 'POST',
       body: JSON.stringify(phonebook),
       headers: {
@@ -49,10 +49,10 @@ const ContactForm = () => {
   }
   console.log('Empty Fields', emptyFields)
   console.log('PB', {phonebooks})
-
   const handleFormShow = () => {
     setShowForm(!showForm)
   }
+  
 
   return (
     <>

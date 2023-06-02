@@ -20,15 +20,13 @@ const getExpense = async (req, res) => {
 }
 
 const createExpense = async (req, res) => {
-  const { amount, type, notes } = req.body;
+  const { amount, type } = req.body;
   let emptyFields = [];
   if (!amount) {
     emptyFields.push("amount")
   } if (!type) {
     emptyFields.push("type")
-  } if (!notes) {
-    emptyFields.push("notes")
-  }
+  } 
   if (emptyFields.length > 0) {
     return res.status(400).json({ error: "Please fill out all fields", emptyFields})
   }

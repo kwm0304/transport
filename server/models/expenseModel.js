@@ -4,7 +4,6 @@ const Schema = mongoose.Schema
 const expenseSchema = new Schema({
   amount: { type: Number, required: true},
   type: {type: String, required: true},
-  notes: {type: String}
 }, {timestamps: true})
 
 module.exports = mongoose.model('Expense', expenseSchema)

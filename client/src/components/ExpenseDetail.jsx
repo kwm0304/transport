@@ -29,7 +29,7 @@ const ExpenseDetails = ({ expense }) => {
     <>
     <div className="flex gap-4 mx-4 justify-center mt-4 border-2 border-blue-900 border-solid rounded-lg items-center text-blue-900 ">
       <p>{cleanToday}</p>
-      <p>{expense.amount}</p>
+      <p>${expense.amount}</p>
       <p>{expense.type}</p>
       <button onClick={handleClick}><FaTrash /></button>
     </div>

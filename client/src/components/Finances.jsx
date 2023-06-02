@@ -2,13 +2,15 @@
 //expenses
 import { useContext, useEffect } from 'react'
 import { EventContext } from '../context/EventContext'
+import { ExpenseContext } from '../context/ExpenseContext '
 import { useAuthContext } from '../hooks/useAuth'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 
 const Finances = () => {
   const { user } = useAuthContext()
-  const { events = {events: []}, dispatch } = useContext(EventContext)  
+  const { events = {events: []}, dispatch1 } = useContext(EventContext)  
+  const { expenses, dispatch} = useContext(ExpenseContext)
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -19,14 +21,31 @@ const Finances = () => {
           }
         })
         const data = await response.json()
-        dispatch({ type: 'SET_EVENTS', payload: data })
+        dispatch1({ type: 'SET_EVENTS', payload: data })
       
       } catch (error) {
         console.error('Error fetching events', error)
       }
     }
     fetchEvents()
-  },[dispatch, user])
+  },[dispatch1, user])
+
+  useEffect(() => {
+    const fetchExpenses = async () => {
+      try {
+        const response = await fetch('api/expenses', {
+          headers: {
+            'Authorization': `Bearer ${user.token}`
+          }
+        })
+        const data = await response.json()
+        dispatch({type: 'SET_EXPENSES', payload: data })
+      } catch (error) {
+        console.error('Error fetching expenses', error)
+      }
+    }
+    fetchExpenses()
+  }, [dispatch, user])
 
   const today = moment().startOf('day')
 
@@ -50,6 +69,10 @@ const Finances = () => {
   }, 0)
   return totalPrice
   }
+
+  const totalExpenses = expenses.expenses.reduce((total, expense) => {
+    const expenseDate = moment
+  })
   return(
     <div className="py-2">
       <Link to='/expenses'>

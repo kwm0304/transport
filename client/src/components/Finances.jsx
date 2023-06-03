@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom'
 const Finances = () => {
   const { user } = useAuthContext()
   const { events = {events: []}, dispatch1 } = useContext(EventContext)  
-  const { expenses, dispatch} = useContext(ExpenseContext)
+  const { expenses = {expenses: [{}]}, dispatch} = useContext(ExpenseContext)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,6 +38,8 @@ const Finances = () => {
 
     fetchData()
   }, [dispatch1, dispatch, user])
+  console.log('expensetype', expenses)
+  console.log('eventType', events)
 
   const today = moment().startOf('day')
   const calculateTotal = (period, data) => {

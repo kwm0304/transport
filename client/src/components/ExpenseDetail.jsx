@@ -22,6 +22,7 @@ const ExpenseDetails = ({ expense }) => {
     }
     
   }
+  console.log('EXPENSE', expense)
   const today = new Date()
   console.log(today)
   const cleanToday = today.toDateString()
@@ -29,8 +30,8 @@ const ExpenseDetails = ({ expense }) => {
     <>
     <div className="flex gap-4 mx-4 justify-center mt-4 border-2 border-blue-900 border-solid rounded-lg items-center text-blue-900 ">
       <p>{cleanToday}</p>
-      <p>${expense.amount}</p>
-      <p>{expense.type}</p>
+      <p>${expense.expenses.amount}</p>
+      <p>{expense.expenses.type}</p>
       <button onClick={handleClick}><FaTrash /></button>
     </div>
     </>

@@ -1,11 +1,11 @@
 import { useEffect } from 'react'
 import ExpenseForm from './ExpenseForm'
 import ExpenseDetails from './ExpenseDetail'
-import { useExpenseContext } from '../hooks/useExpenseContext'
 import { useAuthContext } from '../hooks/useAuth'
+import { useExpenseContext } from '../hooks/useExpenseContext'
 
 const Expenses = () => {
-  const { expenses=[] , dispatch } = useExpenseContext()
+  const { expenses , dispatch } = useExpenseContext()
   const { user } = useAuthContext()
   
   useEffect(() => {
@@ -18,6 +18,7 @@ const Expenses = () => {
       const json = await response.json()
       if (response.ok) {
         dispatch({type: 'SET_EXPENSES', payload: json})
+        console.log('Dispatched w/ payload', json)
       }
     }
     if (user) {
@@ -25,16 +26,18 @@ const Expenses = () => {
     }
   }, [dispatch, user])
   //select expense type
-  let expenseArray = []
-  expenseArray.push(expenses)
+  
+  
+  console.log('type', typeof expenses)
+  
   
   
   return (
     <>
-    <ExpenseForm expenses={expenses}/>
+    <ExpenseForm expenses={expenses} />
     <div className='mapping'>
-      {expenseArray && expenseArray.map(expense => (
-        <ExpenseDetails key={expense._id} expense={expense} />
+      {expenses && expenses.map((expense, index) => (
+        <ExpenseDetails key={index} props={expense} amount={expense.amount} type={expense.type} createdAt={expense.createdAt} _id={expense._id}/>
       ))}
     </div>
     </>

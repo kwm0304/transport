@@ -6,6 +6,7 @@ export const expenseReducer = (state = { expenses: [] }, action) => {
   const newExpenses = Array.isArray(action.payload) ? action.payload : [action.payload]
   switch (action.type) {
     case 'SET_EXPENSES':
+      console.log('reducer payload', action.payload)
       return {
         ...state,
         expenses: action.payload
@@ -26,15 +27,12 @@ export const expenseReducer = (state = { expenses: [] }, action) => {
 };
 
 export const ExpenseContextProvider = ({ children }) => {
-  const [expenses, dispatch] = useReducer(expenseReducer, []);
+  const [state, dispatch] = useReducer(expenseReducer, {expenses:[{}]});
 
   return (
-    <ExpenseContext.Provider value={{ expenses, dispatch }}>
+    <ExpenseContext.Provider value={{ ...state, dispatch }}>
       { children }
     </ExpenseContext.Provider>
   );
 };
 
-ExpenseContextProvider.propTypes = {
-  children: PropTypes.node.isRequired
-}

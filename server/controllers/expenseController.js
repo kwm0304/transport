@@ -32,7 +32,7 @@ const createExpense = async (req, res) => {
   }
   try {
     const user_id = req.params.user_id;
-    const expense = await Expense.create({ amount, type, user_id })
+    const expense = await Expense.create({ amount, type,  user_id })
     res.status(200).json(expense)
   } catch (error) {
     res.status(400).json({ error: error.message })

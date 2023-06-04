@@ -4,7 +4,7 @@ import { useAuthContext } from "../hooks/useAuth"
 import { FaPlus } from "react-icons/fa"
 
 const ExpenseForm = () => {
-  const [amount, setAmount] = useState(null)
+  const [amount, setAmount] = useState('')
   const [type, setType] = useState('')
   const [error, setError] = useState(null)
   const [emptyFields, setEmptyFields] = useState([])
@@ -34,12 +34,12 @@ const ExpenseForm = () => {
       setEmptyFields(json.emptyFields)
     }
     if (response.ok) {
-      dispatch({type: 'CREATE_EXPENSE', payload: json})
-      setAmount(0)
+      setAmount('')
       setType(null)
       setError(null)
       setEmptyFields([])
       setShowForm(false)
+      dispatch({type: 'CREATE_EXPENSE', payload: json})
       console.log('New expense added')
       console.log('expense dispatch', dispatch)
     }

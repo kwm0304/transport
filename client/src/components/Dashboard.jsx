@@ -14,7 +14,7 @@ return(
   <h2 className='text-blue-900 font-bold uppercase text-center mb-16 mt-16 text-2xl'>Dashboard</h2>
   <div className="grid grid-cols-2 text-blue-900 place-items-center gap-y-20">
     <div className='grid-grid-cols-1 '>
-      <Link to='/calendar'>
+      <Link to='/analytics'>
       <SiGoogleanalytics className='text-4xl mx-auto'/>
       <h3 className='font-bold'>Analytics</h3>
       </Link>
@@ -37,18 +37,7 @@ return(
       <h3 className='font-bold'>Finances</h3>
       </Link>
     </div>
-    <div className='grid-grid-cols-1 -center'>
-      <Link to='/list'>
-      <TiThList className='text-4xl mx-auto'/>
-      <h3 className='font-bold'>List</h3>
-      </Link>
-    </div>
-    <div className='grid-grid-cols-1 -center'>
-      <Link to='/settings'>
-      <RiSettings3Fill className='text-4xl mx-auto'/>
-      <h3 className='font-bold'>Settings</h3>
-      </Link>
-    </div>
+    
   </div>
   </>
 )

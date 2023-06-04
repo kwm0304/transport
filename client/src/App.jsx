@@ -21,6 +21,7 @@ Modal.setAppElement('#root')
 import { useAuthContext } from './hooks/useAuth'
 import ExpenseTotals from './components/ExpenseTotals'
 import RevenueTotal from './components/RevenueTotals'
+import Analytics from './components/Analytics'
 
 function App() {
   const { user } = useAuthContext()
@@ -80,6 +81,10 @@ function App() {
           <Route
           path='/eventTotals'
           element={<RevenueTotal />}
+          />
+          <Route
+          path='/analytics'
+          element={<Analytics />}
           />
         </Routes>
       </div>

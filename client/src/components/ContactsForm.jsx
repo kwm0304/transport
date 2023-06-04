@@ -56,7 +56,7 @@ const ContactForm = () => {
 
   return (
     <>
-      <h2 className='text-center font-bold text-2xl'>Contacts</h2>
+      <h2 className='text-center font-bold text-2xl text-blue-900 my-8'>Contacts</h2>
       <div className="flex justify-end mr-8 text-blue-900 text-2xl">
       <FaPlus onClick={handleFormShow}/>
       </div>

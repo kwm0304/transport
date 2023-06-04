@@ -138,14 +138,6 @@ const ExpenseTotals = () => {
             </li>
           ))}
         </ul>
-        <h3 className='font-semibold text-lg'>Today:</h3>
-        <ul>
-          {calculateTodayTotal().map(total => (
-            <li key={total.type}>
-              <span className='font-semibold'>{total.type}:</span> <span className='text-red-500'>{total.total}</span>
-            </li>
-          ))}
-        </ul>
       </div>
     </div>
   );

@@ -16,6 +16,7 @@
     "@fullcalendar/list": "^6.1.7",
     "@fullcalendar/react": "^6.1.7",
     "@fullcalendar/timegrid": "^6.1.7",
+    "axios": "^1.4.0",
     "cors": "^2.8.5",
     "dotenv": "^16.1.0",
     "moment": "^2.29.4",

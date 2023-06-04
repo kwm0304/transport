@@ -24,15 +24,16 @@ const ExpenseDetails = ({ amount, type, _id, createdAt }) => {
     if (response.ok) {
       dispatch({type: 'DELETE_EXPENSE', payload: json})
     }
-    
   }
   console.log('amount', amount)
   console.log('type', type)
+
+  const datePart = createdAt ? createdAt.split("T")[0] : '';
   return (
     <>
     <div className="flex gap-4 mx-4 justify-between mt-4 border-2 border-blue-900 border-solid rounded-lg items-center text-blue-900 " key={_id}>
-      <p>{createdAt}</p>
-      <p className="ml-4">${amount}</p>
+      <p className="ml-4">{datePart}</p>
+      <p >${amount}</p>
       <p className="font-semibold">{type}</p>
       <button onClick={handleClick} className="mr-4"><FaTrash /></button>
     </div>

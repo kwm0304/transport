@@ -6,7 +6,6 @@ export const expenseReducer = (state = { expenses: [] }, action) => {
   const newExpenses = Array.isArray(action.payload) ? action.payload : [action.payload]
   switch (action.type) {
     case 'SET_EXPENSES':
-      console.log('reducer payload', action.payload)
       return {
         ...state,
         expenses: action.payload

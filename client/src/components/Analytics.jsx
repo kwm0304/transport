@@ -5,6 +5,7 @@ import { useEventContext } from '../hooks/useEventContext';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import { PieChart } from 'react-minimal-pie-chart';
+import moment from 'moment';
 
 const Analytics = () => {
   const { user } = useAuthContext();
@@ -39,17 +40,68 @@ const Analytics = () => {
     }
   }, [dispatch, dispatch1, user]);
 
+  const calculateTotal = (data, type) => {
+    return data
+    .filter(expense => expense.type === type)
+    .reduce((total, expense) => total + expense.amount, 0)
+  }
   //filter expense/rev for given time period -> return array of objects for that time period
   const getWeeklyExpenses = () => {
-    
+    const currentDate = moment();
+    const currentWeek = currentDate.isoWeek()
+
+    const weekExpenses = expenses.filter(expense => {
+      const expenseDate = moment(expense.createdAt);
+      return(
+        expenseDate.isoWeek() === currentWeek && 
+        expenseDate.year() === currentDate.year()
+      )
+    })
+
+    const types = [...new Set(weekExpenses.map(expense => expense.type))];
+    const totals = types.map(type => ({
+      type,
+      total: calculateTotal(weekExpenses, type)
+    }));
+    return totals
   };
 
   const getMonthlyExpenses = () => {
-    
+    const currentDate = moment();
+    const currentMonth = currentDate.month();
+
+    const monthExpenses = expenses.filter(expense => {
+      const expenseDate = moment(expense.createdAt)
+      return(
+        expenseDate.month() === currentMonth &&
+        expenseDate.year() === currentDate.year()
+      )
+    })
+
+    const types = [...new Set(monthExpenses.map(expense => expense.type))]
+    const totals = types.map(type => ({
+      type,
+      total: calculateTotal(monthExpenses, type)
+    }))
+
+    return totals;
   };
 
   const getYearlyExpenses = () => {
-    
+    const currentDate = moment()
+    const currentYear = currentDate.year()
+
+    const yearExpenses = expenses.filter(expense => {
+      const expenseDate = moment(expense.createdAt);
+      return expenseDate.year() === currentYear;
+    })
+
+    const types = [...new Set(yearExpenses.map(expense => expense.type))]
+    const totals = types.map(type => ({
+      type,
+      total: calculateTotal(yearExpenses, type)
+    }))
+    return totals
   };
 
   const getWeeklyRevenuesByStore = () => {

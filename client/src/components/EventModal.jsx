@@ -94,7 +94,6 @@ function EventModal  ({ isOpen, onClose, onEventAdded })  {
     })
   }
   console.log('git', getDirections())
-
   return(
     <Modal isOpen={isOpen} onRequestClose={onClose} style={modalStyle}>
       <div className='flex justify-end text-xl text-blue-900' onClick={onClose}>
@@ -140,7 +139,7 @@ function EventModal  ({ isOpen, onClose, onEventAdded })  {
           <label htmlFor="address" className="w-20">Address</label>
           <GooglePlacesAutocomplete
           apiKey={key}
-          onPlaceSelected={(place) => {console.log(place)}}
+          onPlaceSelected={(place) => {console.log('place', place)}}
           className="rounded-lg mx-2 text-center border border-gray-950 w-48"
           />
           {/* <input

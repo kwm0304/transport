@@ -37,14 +37,16 @@ const RevenueTotal = () => {
   
     const totalPrice = events.events.reduce((total, event) => {
       const eventDate = moment(event.start).startOf('day');
+      const currentYear = moment().year()
+      const eventPrice = isNaN(event.price) ? 0 : event.price;
       if (period === 'today' && eventDate.isSame(today, 'day')) {
-        return total + event.price;
+        return total + eventPrice;
       } else if (period === 'week' && eventDate.isSame(today, 'week')) {
-        return total + event.price;
+        return total + eventPrice;
       } else if (period === 'month' && eventDate.isSame(today, 'month')) {
-        return total + event.price;
-      } else if (period === 'year' && eventDate.isSame(today, 'year')) {
-        return total + event.price;
+        return total + eventPrice;
+      } else if (period === 'year' && eventDate.year() === currentYear) {
+        return total + eventPrice;
       }
       return total;
     }, 0);

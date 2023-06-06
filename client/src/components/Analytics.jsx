@@ -61,7 +61,10 @@ const Analytics = () => {
   const calculateTotalRevenue = (data, type) => {
     return data
     .filter(event => event.title === type)
-    .reduce((total, event) => total + event.price, 0)
+    .reduce((total, event) => {
+      const eventPrice = isNaN(event.price) ? 0 : event.price;
+      return total + eventPrice;
+    }, 0)
   } 
 
   const getWeeklyExpenses = () => {
@@ -130,7 +133,7 @@ const Analytics = () => {
     }
     console.log('weeklyrevevents', events.events)
     const currentDate = moment();
-    const currentWeek = currentDate.isoWeek();
+    const currentWeek = currentDate.week();
 
     const weekRevenues = events.events.filter(event => {
       const eventStart = moment(event.start);
@@ -179,8 +182,9 @@ const Analytics = () => {
 
   const getYearlyRevenuesByStore = () => {
     if (!Array.isArray(events.events)) { 
-      return []
+      return [{}]
     }
+    console.log('yearlyrevevents', events.events)
     const currentDate = moment();
     const currentYear = currentDate.year();
 
@@ -198,9 +202,10 @@ const Analytics = () => {
       store,
       amount: calculateTotalRevenue(yearRevenues, store)
     }));
-    console.log('store', totals)
+    totals.sort((a, b) => b.amount - a.amount)
+    console.log('yearstore', totals)
 
-    return totals;
+    return totals.slice(0, 10);
   };
 
   const defaultLabelStyle = {

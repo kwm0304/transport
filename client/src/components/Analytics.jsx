@@ -59,17 +59,15 @@ const Analytics = () => {
   };
 
   const getWeeklyExpenses = () => {
-    if (!Array.isArray(expenses)) { 
-      return []
-    }
+    
     
     const currentDate = moment();
-    const currentWeek = currentDate.isoWeek();
+    const currentWeek = currentDate.week();
 
     const weekExpenses = expenses.filter(expense => {
       const expenseDate = moment(expense.createdAt);
       return (
-        expenseDate.isoWeek() === currentWeek &&
+        expenseDate.week() === currentWeek &&
         expenseDate.year() === currentDate.year()
       );
     });
@@ -149,6 +147,7 @@ const Analytics = () => {
     if (!Array.isArray(events)) { 
       return []
     }
+    console.log('monthrevevents', events)
     const currentDate = moment();
     const currentMonth = currentDate.month();
 
@@ -167,6 +166,7 @@ const Analytics = () => {
       store,
       amount: calculateTotal(monthRevenues, store)
     }));
+    console.log('monthstore', stores)
     return totals;
   };
 
@@ -191,6 +191,8 @@ const Analytics = () => {
       store,
       amount: calculateTotal(yearRevenues, store)
     }));
+    console.log('store', totals)
+
     return totals;
   };
 
@@ -221,7 +223,9 @@ const Analytics = () => {
                 <div>
                   {/* Render the pie chart for weekly expenses */}
                   <PieChart
-            
+                    className='px-4 pt-8'
+                    labelStyle={defaultLabelStyle}
+                    label={({ dataEntry }) => `${dataEntry.title}`}
                     data={getWeeklyExpenses().map(expense => ({
                       label: expense.type,
                       title: expense.type,

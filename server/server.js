@@ -6,6 +6,7 @@ const eventRoutes = require('./routes/events')
 const userRoutes = require('./routes/user')
 const phonebookRoutes = require('./routes/phonebook')
 const expenseRoutes = require('./routes/expenses')
+const path = require('path')
 
 const app = express()
 

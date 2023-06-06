@@ -29,14 +29,15 @@ function EventModal  ({ isOpen, onClose, onEventAdded })  {
     }
 
     useEffect(() => {
-      if (!user) return
+      if (user) {
       fetch("/key").then(async (r) => {
         const { apiKey } = await r.json();
         console.log('APIKEY', apiKey)
         
         setKey(apiKey);
-      })
-    }, [user])
+      })} else { 
+        console.error('No user')
+    }}, [user])
     console.log('key', key)
 
   const handleSubmit = async (e) => {

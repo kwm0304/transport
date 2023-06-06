@@ -58,6 +58,12 @@ const Analytics = () => {
       .reduce((total, expense) => total + expense.amount, 0);
   };
 
+  const calculateTotalRevenue = (data, type) => {
+    return data
+    .filter(event => event.title === type)
+    .reduce((total, event) => total + event.price, 0)
+  } 
+
   const getWeeklyExpenses = () => {
     
     
@@ -109,7 +115,7 @@ const Analytics = () => {
       const expenseDate = moment(expense.createdAt);
       return expenseDate.year() === currentYear;
     });
-
+    console.log('yearlyexpenses', expenses)
     const types = [...new Set(yearExpenses.map(expense => expense.type))];
     const totals = types.map(type => ({
       type,
@@ -119,17 +125,18 @@ const Analytics = () => {
   };
   
   const getWeeklyRevenuesByStore = () => {
-    if (!Array.isArray(events)) { 
+    if (!Array.isArray(events.events)) { 
       return []
     }
+    console.log('weeklyrevevents', events.events)
     const currentDate = moment();
     const currentWeek = currentDate.isoWeek();
 
-    const weekRevenues = events.filter(event => {
+    const weekRevenues = events.events.filter(event => {
       const eventStart = moment(event.start);
       const eventEnd = moment(event.end);
       return (
-        eventStart.isoWeek() === currentWeek &&
+        eventStart.week() === currentWeek &&
         eventStart.year() === currentDate.year() &&
         eventEnd.year() === currentDate.year()
       );
@@ -138,20 +145,20 @@ const Analytics = () => {
     const stores = [...new Set(weekRevenues.map(event => event.title))];
     const totals = stores.map(store => ({
       store,
-      amount: calculateTotal(weekRevenues, store)
+      amount: calculateTotalRevenue(weekRevenues, store)
     }));
     return totals;
   };
 
   const getMonthlyRevenuesByStore = () => {
-    if (!Array.isArray(events)) { 
+    if (!Array.isArray(events.events)) { 
       return []
     }
     console.log('monthrevevents', events)
     const currentDate = moment();
     const currentMonth = currentDate.month();
 
-    const monthRevenues = events.filter(event => {
+    const monthRevenues = events.events.filter(event => {
       const eventStart = moment(event.start);
       const eventEnd = moment(event.end);
       return (
@@ -164,20 +171,20 @@ const Analytics = () => {
     const stores = [...new Set(monthRevenues.map(event => event.title))];
     const totals = stores.map(store => ({
       store,
-      amount: calculateTotal(monthRevenues, store)
+      amount: calculateTotalRevenue(monthRevenues, store)
     }));
     console.log('monthstore', stores)
     return totals;
   };
 
   const getYearlyRevenuesByStore = () => {
-    if (!Array.isArray(events)) { 
+    if (!Array.isArray(events.events)) { 
       return []
     }
     const currentDate = moment();
     const currentYear = currentDate.year();
 
-    const yearRevenues = events.filter(event => {
+    const yearRevenues = events.events.filter(event => {
       const eventStart = moment(event.start);
       const eventEnd = moment(event.end);
       return (
@@ -189,7 +196,7 @@ const Analytics = () => {
     const stores = [...new Set(yearRevenues.map(event => event.title))];
     const totals = stores.map(store => ({
       store,
-      amount: calculateTotal(yearRevenues, store)
+      amount: calculateTotalRevenue(yearRevenues, store)
     }));
     console.log('store', totals)
 
@@ -282,6 +289,9 @@ const Analytics = () => {
                 <div>
                   {/* Render the pie chart for weekly revenues by store */}
                   <PieChart
+                    className='px-4 pt-8'
+                    labelStyle={defaultLabelStyle}
+                    label={({ dataEntry }) => `${dataEntry.title}`}
                     data={getWeeklyRevenuesByStore().map(revenue => ({
                       title: revenue.store,
                       value: revenue.amount,
@@ -294,6 +304,9 @@ const Analytics = () => {
                 <div>
                   {/* Render the pie chart for monthly revenues by store */}
                   <PieChart
+                  className='px-4 pt-8'
+                  labelStyle={defaultLabelStyle}
+                  label={({ dataEntry }) => `${dataEntry.title}`}
                     data={getMonthlyRevenuesByStore().map(revenue => ({
                       title: revenue.store,
                       value: revenue.amount,
@@ -306,6 +319,9 @@ const Analytics = () => {
                 <div>
                   {/* Render the pie chart for yearly revenues by store */}
                   <PieChart
+                  className='px-4 pt-8'
+                  labelStyle={defaultLabelStyle}
+                  label={({ dataEntry }) => `${dataEntry.title}`}
                     data={getYearlyRevenuesByStore().map(revenue => ({
                       title: revenue.store,
                       value: revenue.amount,

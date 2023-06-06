@@ -16,6 +16,5 @@ router.get('/:id', getEvent)
 router.post('/', createEvent)
 router.delete('/:id', deleteEvent)
 router.patch('/:id', updateEvent)
-router.get('/key', getKey)
 
 module.exports = router

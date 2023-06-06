@@ -25,6 +25,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'))
 })
 
+app.get('/key', (req, res) => res.send({ apiKey: `${process.env.GOOGLE_MAPS_API_KEY}` }))
 app.use('/api/events', eventRoutes)
 app.use('/api/user', userRoutes)
 app.use('/api/contacts', phonebookRoutes)

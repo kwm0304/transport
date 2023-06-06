@@ -23,11 +23,13 @@ export const eventReducer = (state = { events: [] }, action) => {
       }
       default:
         return state
+    
   }
 }
 
 export const EventContextProvider = ({ children }) => {
-  const [events, dispatch1] = useReducer(eventReducer, [])
+  const [events, dispatch1] = useReducer(eventReducer,  [])
+
   return(
     <EventContext.Provider value={{events, dispatch1}}>
       { children }

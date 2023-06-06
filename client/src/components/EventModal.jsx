@@ -29,9 +29,12 @@ function EventModal  ({ isOpen, onClose, onEventAdded })  {
     }
 
     useEffect(() => {
-      getDirections()
+      fetch("/key").then(async (r) => {
+        const { apiKey } = await r.json();
+        console.log('APIKEY', apiKey)
+        setKey(apiKey);
+      })
     }, [])
-    console.log('apiKey', key)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -81,19 +84,7 @@ function EventModal  ({ isOpen, onClose, onEventAdded })  {
     onClose()
   }
 
-  const getDirections = () => {
-    if (!user) return
-    fetch('/api/events/key', {
-      headers: {
-        'Authorization': `Bearer ${user.token}`
-    }})
-    .then(response => response.json())
-    .then(data => {
-      const apiKey = data.apiKey
-      setKey(apiKey)
-    })
-  }
-  console.log('git', getDirections())
+
   return(
     <Modal isOpen={isOpen} onRequestClose={onClose} style={modalStyle}>
       <div className='flex justify-end text-xl text-blue-900' onClick={onClose}>

@@ -104,8 +104,7 @@ const Calendar = () => {
     center: 'dayGridMonth,timeGridWeek,timeGridDay,listDay'
   }
 
-  const key = import.meta.env;
-  console.log('key', {key})
+  
 
   return (
     <section>

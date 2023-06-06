@@ -18,9 +18,6 @@ const Nav = () => {
         
         <ul className="flex list-none m-0 p-0">
           <li className="mr-4">
-            <Link to="/navigation" className="text-white">Navigation</Link>
-          </li>
-          <li className="mr-4">
             <Link to="/calendar" className="text-white">Calendar</Link>
           </li>
           <li className="mr-4 text-white">

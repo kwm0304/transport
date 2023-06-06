@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useEventContext } from '../hooks/useEventContext'
 import { useAuthContext } from '../hooks/useAuth'
 import DateTime from 'react-datetime'
@@ -20,12 +20,18 @@ function EventModal  ({ isOpen, onClose, onEventAdded })  {
     const [phoneNumber, setPhoneNumber] = useState(0)
     const [error, setError]=useState(null)
     const [emptyField, setEmptyField] = useState([])
+    const [key, setKey] = useState(null)
 
     const modalStyle = {
       content: {
         height: '90vh',
       }
     }
+
+    useEffect(() => {
+      getDirections()
+    }, [])
+    console.log('apiKey', key)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -84,10 +90,8 @@ function EventModal  ({ isOpen, onClose, onEventAdded })  {
     .then(response => response.json())
     .then(data => {
       const apiKey = data.apiKey
-      console.log({apiKey})
-      console.log('type', typeof apiKey)
+      setKey(apiKey)
     })
-    
   }
   console.log('git', getDirections())
 
@@ -134,15 +138,19 @@ function EventModal  ({ isOpen, onClose, onEventAdded })  {
         </div>
         <div className="flex flex-cols-2 justify-center my-2 mx-2">
           <label htmlFor="address" className="w-20">Address</label>
-          
-          <input
+          <GooglePlacesAutocomplete
+          apiKey={key}
+          onPlaceSelected={(place) => {console.log(place)}}
+          className="rounded-lg mx-2 text-center border border-gray-950 w-48"
+          />
+          {/* <input
           placeholder="1234 5th St."
           name='address'
           type="address"
           id="address"
           onChange={(e) => setAddress(e.target.value)}
           className="rounded-lg mx-2 text-center border border-gray-950 w-48"
-          />
+          /> */}
         </div>
         <div className="flex flex-cols-2 justify-center my-2 mx-2">
           <label htmlFor="firstName" className="w-20">First Name</label>

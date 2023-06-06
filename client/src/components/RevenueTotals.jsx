@@ -7,7 +7,7 @@ import moment from 'moment'
 
 const RevenueTotal = () => {
   const { user } = useAuthContext()
-  const { events = [{}], dispatch1 } = useContext(EventContext);
+  const { events = [], dispatch1 } = useContext(EventContext);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -34,7 +34,6 @@ const RevenueTotal = () => {
       return 0;
     }
     const today = moment().startOf('day')
-    console.log('today', today)
   
     const totalPrice = events.events.reduce((total, event) => {
       const eventDate = moment(event.start).startOf('day');

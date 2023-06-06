@@ -15,6 +15,15 @@ app.use((req, res, next) => {
   console.log('reqpath', req.path, 'reqmethod', req.method)
   next()
 })
+
+//Serve up static assets
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../client/dist')));
+}
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/dist/index.html'))
+})
+
 app.use('/api/events', eventRoutes)
 app.use('/api/user', userRoutes)
 app.use('/api/contacts', phonebookRoutes)

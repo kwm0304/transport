@@ -87,6 +87,7 @@ function EventModal  ({ isOpen, onClose, onEventAdded })  {
       console.log({apiKey})
       console.log('type', typeof apiKey)
     })
+    
   }
   console.log('git', getDirections())
 

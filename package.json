@@ -5,9 +5,8 @@
   },
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server/server.js",
     "develop": "concurrently \"npm run start:server\" \"npm run start:client\"",
     "start:server": "cd server && npm start",

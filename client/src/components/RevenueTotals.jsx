@@ -27,19 +27,20 @@ const RevenueTotal = () => {
     fetchEvents()
   },[dispatch1, user])
 
-  const today = moment().startOf('day')
-  console.log(today)
 
   const calculateTotalPrice = (period) => {
-    if (events.length === 0) {
+    if (!Array.isArray(events.events)) return [] 
+    if (events.events.length === 0) {
       return 0;
     }
+    const today = moment().startOf('day')
+    console.log('today', today)
   
     const totalPrice = events.events.reduce((total, event) => {
       const eventDate = moment(event.start).startOf('day');
       const currentYear = moment().year()
       const eventPrice = isNaN(event.price) ? 0 : event.price;
-      if (period === 'today' && eventDate.isSame(today, 'day')) {
+      if (period === 'day' && eventDate.isSame(today, 'day')) {
         return total + eventPrice;
       } else if (period === 'week' && eventDate.isSame(today, 'week')) {
         return total + eventPrice;
@@ -58,6 +59,8 @@ const RevenueTotal = () => {
     <div className='text-center text-blue-900'>
       <h2 className='font-bold text-xl'>Revenues</h2>
       <div>
+        <h3 className='font-semibold text-lg'>Day:</h3>
+        <p className='text-red-500'>{calculateTotalPrice('day')}</p>
         <h3 className='font-semibold text-lg'>Week:</h3>
         <p className='text-red-500'>{calculateTotalPrice('week')}</p>
         <h3 className='font-semibold text-lg'>Month:</h3>

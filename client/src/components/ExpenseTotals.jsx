@@ -92,13 +92,11 @@ const ExpenseTotals = () => {
 
   const calculateTodayTotal = () => {
     const currentDate = moment();
+    const currentDay = currentDate.day()
 
     const todayExpenses = expenses.filter(expense => {
       const expenseDate = moment(expense.createdAt);
-      return (
-        expenseDate.isSame(currentDate, 'day') &&
-        expenseDate.year() === currentDate.year()
-      );
+      return expenseDate.day() === currentDay
     });
 
     const types = [...new Set(todayExpenses.map(expense => expense.type))];
@@ -114,6 +112,14 @@ const ExpenseTotals = () => {
     <div className='text-center text-blue-900'>
       <h2 className='font-bold text-xl'>Expenses</h2>
       <div>
+        <h3 className='font-semibold text-lg'>Today:</h3>
+        <ul>
+          {calculateTodayTotal().map(total => (
+            <li key={total.type}>
+              <span className='font-semibold'>{total.type}:</span> <span className='text-red-500'>{total.total}</span>
+            </li>
+          ))}
+        </ul>
         <h3 className='font-semibold text-lg'>Week:</h3>
         <ul>
           {calculateWeekTotal().map(total => (

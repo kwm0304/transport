@@ -20,9 +20,7 @@ const Analytics = () => {
             'Authorization': `Bearer ${user.token}`
           }
         })
-        console.log('eventRes', response)
         const data = await response.json()
-        console.log('eventData', data)
         dispatch1({ type: 'SET_EVENTS', payload: data })
       
       } catch (error) {
@@ -42,7 +40,6 @@ const Analytics = () => {
         }
       });
       const json = await response.json();
-      console.log('expenseData', json)
       if (response.ok) {
         dispatch({ type: 'SET_EXPENSES', payload: json });
       }
@@ -68,8 +65,6 @@ const Analytics = () => {
   } 
 
   const getWeeklyExpenses = () => {
-    
-    
     const currentDate = moment();
     const currentWeek = currentDate.week();
 
@@ -118,7 +113,6 @@ const Analytics = () => {
       const expenseDate = moment(expense.createdAt);
       return expenseDate.year() === currentYear;
     });
-    console.log('yearlyexpenses', expenses)
     const types = [...new Set(yearExpenses.map(expense => expense.type))];
     const totals = types.map(type => ({
       type,
@@ -131,7 +125,6 @@ const Analytics = () => {
     if (!Array.isArray(events.events)) { 
       return []
     }
-    console.log('weeklyrevevents', events.events)
     const currentDate = moment();
     const currentWeek = currentDate.week();
 
@@ -157,7 +150,6 @@ const Analytics = () => {
     if (!Array.isArray(events.events)) { 
       return []
     }
-    console.log('monthrevevents', events)
     const currentDate = moment();
     const currentMonth = currentDate.month();
 
@@ -176,7 +168,6 @@ const Analytics = () => {
       store,
       amount: calculateTotalRevenue(monthRevenues, store)
     }));
-    console.log('monthstore', stores)
     return totals;
   };
 
@@ -184,7 +175,6 @@ const Analytics = () => {
     if (!Array.isArray(events.events)) { 
       return [{}]
     }
-    console.log('yearlyrevevents', events.events)
     const currentDate = moment();
     const currentYear = currentDate.year();
 
@@ -203,8 +193,6 @@ const Analytics = () => {
       amount: calculateTotalRevenue(yearRevenues, store)
     }));
     totals.sort((a, b) => b.amount - a.amount)
-    console.log('yearstore', totals)
-
     return totals.slice(0, 10);
   };
 
@@ -233,7 +221,6 @@ const Analytics = () => {
               </TabList>
               <TabPanel>
                 <div>
-                  {/* Render the pie chart for weekly expenses */}
                   <PieChart
                     className='px-4 pt-8'
                     labelStyle={defaultLabelStyle}
@@ -249,7 +236,6 @@ const Analytics = () => {
               </TabPanel>
               <TabPanel>
                 <div>
-                  {/* Render the pie chart for monthly expenses */}
                   <PieChart
                     className='px-4 pt-8'
                     labelStyle={defaultLabelStyle}
@@ -266,7 +252,6 @@ const Analytics = () => {
               </TabPanel>
               <TabPanel>
                 <div>
-                  {/* Render the pie chart for yearly expenses */}
                   <PieChart
                   className='px-4 pt-8'
                   labelStyle={defaultLabelStyle}
@@ -292,7 +277,6 @@ const Analytics = () => {
               </TabList>
               <TabPanel>
                 <div>
-                  {/* Render the pie chart for weekly revenues by store */}
                   <PieChart
                     className='px-4 pt-8'
                     labelStyle={defaultLabelStyle}
@@ -307,7 +291,6 @@ const Analytics = () => {
               </TabPanel>
               <TabPanel>
                 <div>
-                  {/* Render the pie chart for monthly revenues by store */}
                   <PieChart
                   className='px-4 pt-8'
                   labelStyle={defaultLabelStyle}
@@ -322,7 +305,6 @@ const Analytics = () => {
               </TabPanel>
               <TabPanel>
                 <div>
-                  {/* Render the pie chart for yearly revenues by store */}
                   <PieChart
                   className='px-4 pt-8'
                   labelStyle={defaultLabelStyle}

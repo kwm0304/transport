@@ -37,6 +37,7 @@ function EventModal  ({ isOpen, onClose, onEventAdded })  {
         setKey(apiKey);
       })
     }, [user])
+    console.log('key', key)
 
   const handleSubmit = async (e) => {
     e.preventDefault()

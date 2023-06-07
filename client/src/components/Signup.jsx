@@ -20,7 +20,7 @@ const Signup = () => {
       <h2 className='text-blue-900 font-bold uppercase text-center mb-12 mt-24 text-2xl'>Signup</h2>
       <form onSubmit={handleSubmit}>
         <div className="flex flex-cols-2 justify-center my-2 mx-12">
-          <label htmlFor='firstName' className='w-20'>First Name</label>
+          <label htmlFor='firstName' className='w-20'>Email</label>
           <input
           placeholder='First'
           name='firstName'

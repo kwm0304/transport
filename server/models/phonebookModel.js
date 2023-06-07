@@ -7,7 +7,9 @@ const phonebookSchema = new Schema({
   },
   newNumber: {
     type: String,
-    required: true
+    required: true,
+    minLength: 10,
+    maxLength: 10
   },
   createdAt: {
     type: Date,

@@ -22,6 +22,7 @@ import { useAuthContext } from './hooks/useAuth'
 import ExpenseTotals from './components/ExpenseTotals'
 import RevenueTotal from './components/RevenueTotals'
 import Analytics from './components/Analytics'
+import Mileage from './components/Mileage'
 
 function App() {
   const { user } = useAuthContext()
@@ -85,6 +86,10 @@ function App() {
           <Route
           path='/analytics'
           element={<Analytics />}
+          />
+          <Route
+          path='/mileage'
+          element={<Mileage />}
           />
         </Routes>
       </div>

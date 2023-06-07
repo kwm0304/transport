@@ -24,5 +24,8 @@
   "bugs": {
     "url": "https://github.com/kwm0304/transport/issues"
   },
-  "homepage": "https://github.com/kwm0304/transport#readme"
+  "homepage": "https://github.com/kwm0304/transport#readme",
+  "dependencies": {
+    "concurrently": "^8.1.0"
+  }
 }

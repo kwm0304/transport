@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import { FaTrash } from 'react-icons/fa'
 import { useAuthContext } from '../hooks/useAuth'
 import { useEventContext } from '../hooks/useEventContext'
+import { useEffect, useState } from 'react'
 
 function EventCard ({ isOpen, onClose, props }) {
   const { store, address, startTime, endTime, firstName, lastName, price, phoneNumber, id } = props
@@ -12,6 +13,8 @@ function EventCard ({ isOpen, onClose, props }) {
   const cleanEndTime = (endTime.toLocaleString()).split(' ')
   const { user } = useAuthContext()
   const { dispatch1 } = useEventContext()
+  const [apiKey, setApiKey] = useState('')
+
 
   console.log('address', props.address)
   
@@ -29,6 +32,12 @@ function EventCard ({ isOpen, onClose, props }) {
     }
   }
 
+  useEffect(() => {
+    fetch('/api/google-maps-key')
+      .then((res) => res.json())
+      .then((data) => setApiKey(data.apiKey))
+      .catch(error => console.error(error))
+  }, [])
   // const getDirections = () => {
   //   if (!user) return
   //   fetch('/api/events/key', {
@@ -41,7 +50,10 @@ function EventCard ({ isOpen, onClose, props }) {
   //     console.log(apiKey)
   //   })
   // }
-
+  const genGoogleMap = (address) => {
+    const formattedAddress = props.address.replace(/\s/g, '+')
+    return `https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${formattedAddress}`
+  }
   
   const currentCoordinates = () => {
     if ('geolocation' in navigator) {
@@ -82,7 +94,7 @@ return(
     </div>
     <div className="grid grid-cols-3 py-4">
     <div className="flex flex-col items-center text-blue-900 py-8 px-12">
-      <FaDirections className='text-5xl mb-4'/>
+      <a href={genGoogleMap} target='_blank' rel='noopener noreferrer'><FaDirections className='text-5xl mb-4'/></a>
       <p>Directions</p>
     </div>
     <div className="flex flex-col items-center text-center text-blue-900 py-8 px-12">
@@ -120,7 +132,7 @@ EventCard.propTypes = {
     firstName: PropTypes.string,
     lastName: PropTypes.string,
     price: PropTypes.number,
-    id: PropTypes.string, // Add this line
+    id: PropTypes.string, 
     phoneNumber: PropTypes.number
   }).isRequired,
   

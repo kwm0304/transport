@@ -5,7 +5,6 @@ import DateTime from 'react-datetime'
 import Modal from 'react-modal'
 import { GrClose } from 'react-icons/gr'
 import moment from 'moment'
-import GooglePlacesAutocomplete from 'react-google-autocomplete'
 
 function EventModal  ({ isOpen, onClose, onEventAdded })  {
   const { dispatch1 } = useEventContext()
@@ -20,7 +19,6 @@ function EventModal  ({ isOpen, onClose, onEventAdded })  {
     const [phoneNumber, setPhoneNumber] = useState(0)
     const [error, setError]=useState(null)
     const [emptyField, setEmptyField] = useState([])
-    const [key, setKey] = useState(null)
 
     const modalStyle = {
       content: {
@@ -28,17 +26,7 @@ function EventModal  ({ isOpen, onClose, onEventAdded })  {
       }
     }
 
-    useEffect(() => {
-      if (user) {
-      fetch("/key").then(async (r) => {
-        const { apiKey } = await r.json();
-        console.log('APIKEY', apiKey)
-        
-        setKey(apiKey);
-      })} else { 
-        console.error('No user')
-    }}, [user])
-    console.log('key', key)
+    
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -88,6 +76,11 @@ function EventModal  ({ isOpen, onClose, onEventAdded })  {
     onClose()
   }
 
+  const genGoogleMap = (address) => {
+    const formattedAddress = address.replace(/\s/g, '+')
+    return `https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${formattedAddress}`
+  }
+
 
   return(
     <Modal isOpen={isOpen} onRequestClose={onClose} style={modalStyle}>
@@ -132,19 +125,14 @@ function EventModal  ({ isOpen, onClose, onEventAdded })  {
         </div>
         <div className="flex flex-cols-2 justify-center my-2 mx-2">
           <label htmlFor="address" className="w-20">Address</label>
-          <GooglePlacesAutocomplete
-          apiKey={key}
-          onPlaceSelected={(place) => {console.log('place', place)}}
-          className="rounded-lg mx-2 text-center border border-gray-950 w-48"
-          />
-          {/* <input
+          <input
           placeholder="1234 5th St."
           name='address'
           type="address"
           id="address"
           onChange={(e) => setAddress(e.target.value)}
           className="rounded-lg mx-2 text-center border border-gray-950 w-48"
-          /> */}
+          />
         </div>
         <div className="flex flex-cols-2 justify-center my-2 mx-2">
           <label htmlFor="firstName" className="w-20">First Name</label>

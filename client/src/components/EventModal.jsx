@@ -76,11 +76,7 @@ function EventModal  ({ isOpen, onClose, onEventAdded })  {
     onClose()
   }
 
-  const genGoogleMap = (address) => {
-    const formattedAddress = address.replace(/\s/g, '+')
-    return `https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${formattedAddress}`
-  }
-
+  
 
   return(
     <Modal isOpen={isOpen} onRequestClose={onClose} style={modalStyle}>
@@ -90,6 +86,18 @@ function EventModal  ({ isOpen, onClose, onEventAdded })  {
       <div className="container my-1">
         <h2 className='text-blue-900 font-bold uppercase text-center mb-12 mt-8 text-2xl'>Add Event</h2>
       <form onSubmit={handleSubmit} id='event-form' className='create'>
+      <div className="flex flex-cols-2 justify-center my-2 mx-2 ">
+        <label htmlFor="store" className='w-20'>Start</label>
+        <div className="text-center">
+        <DateTime value={start} onChange={(date) => setStart(date)} className='rounded-lg mx-2 text-center border border-gray-950 w-48'/>
+        </div>
+        </div>
+        <div className="flex flex-cols-2 justify-center my-2 mx-2 ">
+        <label htmlFor="end" className='w-20'>End</label>
+        <div className="text-center ">
+        <DateTime value={end} onChange={(date) => setEnd(date)} className='rounded-lg mx-2 text-center border border-gray-950 w-48'/>
+        </div>
+        </div>  
         <div className="flex flex-cols-2 justify-center my-2 mx-2">
           <label htmlFor="title" className="w-20">Store</label>
           <input
@@ -157,18 +165,7 @@ function EventModal  ({ isOpen, onClose, onEventAdded })  {
           className="rounded-lg mx-2 text-center border border-gray-950 w-48"
           />
         </div>
-        <div className="flex flex-cols-2 justify-center my-2 mx-2 ">
-        <label htmlFor="store" className='w-20'>Start</label>
-        <div className="text-center">
-        <DateTime value={start} onChange={(date) => setStart(date)} className='rounded-lg mx-2 text-center border border-gray-950 w-48'/>
-        </div>
-        </div>
-        <div className="flex flex-cols-2 justify-center my-2 mx-2 ">
-        <label htmlFor="end" className='w-20'>End</label>
-        <div className="text-center ">
-        <DateTime value={end} onChange={(date) => setEnd(date)} className='rounded-lg mx-2 text-center border border-gray-950 w-48'/>
-        </div>
-        </div>
+        
         <div className='grid justify-items-center pt-'>
           <button type='submit' className='rounded-lg bg-blue-900 text-white px-2 py-1 w-36 shadow-xl'>Submit</button>
         </div>

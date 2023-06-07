@@ -92,11 +92,8 @@ return(
         <p className="text-blue-900">{address}</p>
       </div>
     </div>
-    <div className="grid grid-cols-3 py-4">
-    <div className="flex flex-col items-center text-blue-900 py-8 px-12">
-      <a href={genGoogleMap} target='_blank' rel='noopener noreferrer'><FaDirections className='text-5xl mb-4'/></a>
-      <p>Directions</p>
-    </div>
+    <div className="grid grid-cols-3 justify-between py-4">
+    
     <div className="flex flex-col items-center text-center text-blue-900 py-8 px-12">
       <FaPhoneAlt className='text-5xl mb-4'/>
       <p>{store}</p>

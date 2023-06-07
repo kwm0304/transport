@@ -2,7 +2,7 @@ const Phonebook = require("../models/phonebookModel");
 const mongoose = require("mongoose");
 
 const getPhonebooks = async (req, res) => {
-  const user_id = req.user.user_id;
+  const user_id = req.user._id;
   const phonebooks = await Phonebook.find({ user_id }).sort({ createdAt: -1 });
   res.status(200).json(phonebooks);
 };

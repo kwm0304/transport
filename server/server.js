@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'))
 })
 
-app.get('/*', function(req, res) {
+app.get('*', function(req, res) {
   res.sendFile(path.join(_dirname, '../client/dist/index.html'), function (err) {
     if (err) {
       res.status(500).send(err)

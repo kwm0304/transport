@@ -5,7 +5,6 @@ const {
   getEvent,
   deleteEvent,
   updateEvent,
-  getKey
 } = require('../controllers/eventController')
 const requireAuth = require('../middleware/requireAuth')
 const router = express.Router()

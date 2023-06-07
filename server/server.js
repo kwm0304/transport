@@ -25,10 +25,13 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'))
 })
 
-app.get('/api/google-maps-key', (req, res) => {
-  const apiKey = process.env.VITE_GOOGLE_MAPS_API_KEY;
-  res.json({ apiKey });
-});
+app.get('/*', function(req, res) {
+  res.sendFile(path.join(_dirname, '../client/dist/index.html'), function (err) {
+    if (err) {
+      res.status(500).send(err)
+    }
+  })
+})
 app.use('/api/events', eventRoutes)
 app.use('/api/user', userRoutes)
 app.use('/api/contacts', phonebookRoutes)

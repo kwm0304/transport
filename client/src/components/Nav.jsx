@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useLogout } from '../hooks/useLogout';
 import { useAuthContext } from '../hooks/useAuth';
+import BackButton from './BackButton';
 
 const Nav = () => {
   const { logout } = useLogout()

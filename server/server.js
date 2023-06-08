@@ -6,6 +6,7 @@ const eventRoutes = require('./routes/events')
 const userRoutes = require('./routes/user')
 const phonebookRoutes = require('./routes/phonebook')
 const expenseRoutes = require('./routes/expenses')
+const odometerRoutes = require('./routes/odometer')
 const path = require('path')
 
 const app = express()
@@ -36,6 +37,7 @@ app.use('/api/events', eventRoutes)
 app.use('/api/user', userRoutes)
 app.use('/api/contacts', phonebookRoutes)
 app.use('/api/expenses', expenseRoutes)
+app.use('/api/odometers', odometerRoutes)
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {

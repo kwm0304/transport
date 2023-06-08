@@ -23,12 +23,14 @@ import ExpenseTotals from './components/ExpenseTotals'
 import RevenueTotal from './components/RevenueTotals'
 import Analytics from './components/Analytics'
 import Mileage from './components/Mileage'
+import BackButton from './components/BackButton'
 
 function App() {
   const { user } = useAuthContext()
   return (
     <Router>
       <Nav />
+      <BackButton />
       <div>
         <Routes>
           <Route

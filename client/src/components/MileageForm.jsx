@@ -1,10 +1,13 @@
 import { useState } from 'react'
+import axios from 'axios'
+import { useAuthContext } from '../hooks/useAuth'
 
 const MilageForm = () => {
   const [miles, setMiles] = useState(0)
   const [city, setCity] = useState('')
   const [showForm, setShowForm] = useState(false)
   const [error, setError] = useState(null)
+  const { user } = useAuthContext()
 
   const handleShowForm = (e) => {
     e.preventDefault()
@@ -13,23 +16,22 @@ const MilageForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const mileage = {miles, city}
-    const response = await fetch('/api/mileage', {
-      method: 'POST',
-      body: JSON.stringify(mileage),
-      headers: {
-        'Content-Type': 'application/json'
+    const mileage = { miles, city }
+    try {
+      const response = await axios.post('/api/odometers', mileage, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`,
+        },
+      })
+      if (response.status === 200) {
+        setMiles(0)
+        setCity('')
+        setError(null)
+        setShowForm(false)
       }
-    })
-    const json = await response.json()
-    if (!response.ok) {
-      setError(json.error)
-    }
-    if (response.ok) {
-      setMiles(0)
-      setCity('')
-      setError(null)
-      setShowForm(false)
+    } catch (error) {
+      setError(error.response.data.error)
     }
   }
 return (

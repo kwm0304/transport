@@ -8,7 +8,6 @@ import EventModal from './components/EventModal'
 import Dashboard from './components/Dashboard'
 import Finances from './components/Finances'
 import NoMatch from './components/NoMatch'
-import StartOfDay from './components/StartOfDay'
 import EventCard from './components/EventCard'
 import Contacts from './components/Contacts'
 import Expenses from './components/Expenses'
@@ -57,10 +56,7 @@ function App() {
           path='/finances'
           element={<Finances />}
           />
-          <Route
-          path='/sod'
-          element={<StartOfDay />}  
-          />        
+               
           <Route 
           path='/*'
           element={<NoMatch />}

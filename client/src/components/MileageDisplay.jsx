@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { FaTrash } from "react-icons/fa"
 
 
-const MileageDisplay = ({ miles, city, _id }) => {
+const MileageDisplay = ({ miles, city, _id, createdAt }) => {
   const { user } = useAuthContext()
 
   const handleClick = async (e) => {
@@ -14,7 +14,7 @@ const MileageDisplay = ({ miles, city, _id }) => {
   return (
     <>
     <div className="flex gap-4 mx-4 justify-between mt-4 border-2 border-blue-900 border-solid rounded-lg items-center text-blue-900 " key={_id}>
-      <p className="ml-4">City{city}</p>
+      <p className="ml-4">{city}</p>
       <p>Miles{miles}</p>
       <p className="">date</p>
       <FaTrash className="mr-4"/>

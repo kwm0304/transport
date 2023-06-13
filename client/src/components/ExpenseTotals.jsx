@@ -14,15 +14,20 @@ const ExpenseTotals = () => {
           'Authorization': `Bearer ${user.token}`
         }
       });
+      console.log('expResonse', response)
       const json = await response.json();
+      console.log('EXPjson', json)
       if (response.ok) {
         dispatch({ type: 'SET_EXPENSES', payload: json });
       }
     };
     if (user) {
       fetchExpenses();
+      console.log('fetchexp', fetchExpenses)
     }
   }, [dispatch, user]);
+
+  console.log('expenses', expenses);
 
   const calculateTotal = (data, type) => {
     return data

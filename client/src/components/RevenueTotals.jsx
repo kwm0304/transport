@@ -26,7 +26,7 @@ const RevenueTotal = () => {
     }
     fetchEvents()
   },[dispatch1, user])
-
+console.log('events', events)
 
   const calculateTotalPrice = (period) => {
     if (!Array.isArray(events.events)) return [] 

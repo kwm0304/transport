@@ -199,10 +199,28 @@ const Analytics = () => {
   const defaultLabelStyle = {
     fontSize: '4.5px',
     fontFamily: 'sans-serif',
-    fill: 'black'
-    
-   
+    fill: 'black',
   }
+
+  const customLabel = ({dataEntry}) => {
+    const radius = 50;
+    const angle = (dataEntry.startAngle + dataEntry.endAngle) / 2;
+    const x = radius * Math.cos(angle);
+    const y = radius * Math.sin(angle);
+
+    const validX = isNaN(x) ? 0 : x;
+    const validY = isNaN(y) ? 0 : y;
+
+    const dx = 10;
+    const dy = 5;
+
+    return (
+      <text x={validX + dx} y={validY + dy} fill="black" textAnchor="middle">
+        {dataEntry.title}
+      </text>
+    )
+  }
+  
   return (
     <>
       <h2 className="text-center text-blue-900 font-bold text-2xl my-8">Analytics</h2>
@@ -224,9 +242,10 @@ const Analytics = () => {
                   <PieChart
                     className='px-4 pt-8'
                     labelStyle={defaultLabelStyle}
-                    label={({ dataEntry }) => `${dataEntry.title}`}
+                    label={customLabel}
                     data={getWeeklyExpenses().map(expense => ({
                       label: expense.type,
+                      
                       title: expense.type,
                       value: expense.total,
                       color: '#' + Math.floor(Math.random() * 16777215).toString(16) // Random color for each expense type

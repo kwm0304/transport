@@ -1,7 +1,7 @@
 import ExpenseTotals from "./ExpenseTotals"
 import RevenueTotal from "./RevenueTotals"
 import { Link } from 'react-router-dom'
-
+//holds and displays the expense and revenue totals
 const Finances = () => {
   return(
     <>

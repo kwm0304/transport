@@ -18,7 +18,7 @@ const ExpenseForm = () => {
       setError('You must be logged in')
       return
     }
-    const expense = {amount, type}
+    const expense = {amount, type, user_id: user._id}
     const response = await fetch('/api/expenses', {
       method: 'POST',
       body: JSON.stringify(expense),

@@ -17,14 +17,22 @@ const ExpenseTotals = () => {
       });
       console.log('expResponse', response)
       const json = await response.json();
+      console.log('expjson', [json])
       dispatch({ type: 'SET_EXPENSES', payload: json });
     } catch (error) {
       console.error('Error fetching expenses', error)
       }
     }
+    if (user) {
       fetchExpenses();
+    }
   }, [dispatch, user]);
-  console.log('expenses', expenses.expenses);
+  console.log('expenses', expenses);
+  console.log(typeof expenses)
+
+  let expenseArray = []
+  expenseArray.push(expenses)
+  console.log('ARRAY', expenseArray)
 
   const calculateTotal = (data, type) => {
     return data
@@ -36,7 +44,7 @@ const ExpenseTotals = () => {
     const currentDate = moment();
     const currentWeek = currentDate.isoWeek();
 
-    const weekExpenses = expenses.expenses.filter(expense => {
+    const weekExpenses = expenses.filter(expense => {
       const expenseDate = moment(expense.createdAt);
       return (
         expenseDate.isoWeek() === currentWeek &&

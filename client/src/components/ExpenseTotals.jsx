@@ -1,38 +1,30 @@
-import { useEffect, useContext } from 'react';
+import { useEffect } from 'react';
 import moment from 'moment';
+import { useExpenseContext } from '../hooks/useExpenseContext';
 import { useAuthContext } from '../hooks/useAuth';
-import { ExpenseContext } from '../context/ExpenseContext';
 
 const ExpenseTotals = () => {
-  const { expenses=[], dispatch } = useContext(ExpenseContext);
+  const { expenses, dispatch } = useExpenseContext();
   const { user } = useAuthContext();
 
   useEffect(() => {
     const fetchExpenses = async () => {
-      try {
       const response = await fetch('/api/expenses', {
         headers: {
           'Authorization': `Bearer ${user.token}`
         }
       });
-      console.log('expResponse', response)
       const json = await response.json();
-      console.log('expjson', [json])
-      dispatch({ type: 'SET_EXPENSES', payload: json });
-    } catch (error) {
-      console.error('Error fetching expenses', error)
+      console.log('json', json)
+      if (response.ok) {
+        dispatch({ type: 'SET_EXPENSES', payload: json });
       }
-    }
+    };
     if (user) {
       fetchExpenses();
     }
   }, [dispatch, user]);
-  console.log('expenses', expenses);
-  console.log(typeof expenses)
-
-  let expenseArray = []
-  expenseArray.push(expenses)
-  console.log('ARRAY', expenseArray)
+  console.log('expenses', expenses)
 
   const calculateTotal = (data, type) => {
     return data

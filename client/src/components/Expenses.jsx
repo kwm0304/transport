@@ -1,11 +1,11 @@
-import { useEffect, useContext } from 'react'
+import { useEffect } from 'react'
 import ExpenseForm from './ExpenseForm'
 import ExpenseDetails from './ExpenseDetail'
-import { ExpenseContext } from '../context/ExpenseContext'
 import { useAuthContext } from '../hooks/useAuth'
+import { useExpenseContext } from '../hooks/useExpenseContext'
 
 const Expenses = () => {
-  const { expenses=[] , dispatch } = useContext(ExpenseContext)
+  const { expenses , dispatch } = useExpenseContext()
   const { user } = useAuthContext()
   
   useEffect(() => {
@@ -15,9 +15,9 @@ const Expenses = () => {
           'Authorization': `Bearer ${user.token}`
         }
       })
+      const json = await response.json()
       if (response.ok) {
-        const json = await response.json()
-        dispatch({ type: 'SET_EXPENSES', payload: json })
+        dispatch({type: 'SET_EXPENSES', payload: json})
         console.log('Dispatched w/ payload', json)
       }
     }
@@ -25,7 +25,6 @@ const Expenses = () => {
     fetchExpenses()
     }
   }, [dispatch, user])
-  console.log('expenses', expenses)
   //select expense type
   
   

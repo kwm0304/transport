@@ -3,7 +3,6 @@ const mongoose = require('mongoose')
 
 const getExpenses = async (req, res) => {
   const user_id = req.user._id
-  console.log('req.use', req.user)
   const expenses = await Expense.find({ user_id }).sort({ createdAt: -1})
   res.status(200).json(expenses)
 }

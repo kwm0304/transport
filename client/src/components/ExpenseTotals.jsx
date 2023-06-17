@@ -1,33 +1,30 @@
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import moment from 'moment';
-import { useExpenseContext } from '../hooks/useExpenseContext';
 import { useAuthContext } from '../hooks/useAuth';
+import { ExpenseContext } from '../context/ExpenseContext';
 
 const ExpenseTotals = () => {
-  const { expenses, dispatch } = useExpenseContext();
+  const { expenses=[], dispatch } = useContext(ExpenseContext);
   const { user } = useAuthContext();
 
   useEffect(() => {
     const fetchExpenses = async () => {
+      try {
       const response = await fetch('/api/expenses', {
         headers: {
           'Authorization': `Bearer ${user.token}`
         }
       });
-      console.log('expResonse', response)
+      console.log('expResponse', response)
       const json = await response.json();
-      console.log('EXPjson', json)
-      if (response.ok) {
-        dispatch({ type: 'SET_EXPENSES', payload: json });
+      dispatch({ type: 'SET_EXPENSES', payload: json });
+    } catch (error) {
+      console.error('Error fetching expenses', error)
       }
-    };
-    if (user) {
-      fetchExpenses();
-      console.log('fetchexp', fetchExpenses)
     }
+      fetchExpenses();
   }, [dispatch, user]);
-
-  console.log('expenses', expenses);
+  console.log('expenses', expenses.expenses);
 
   const calculateTotal = (data, type) => {
     return data
@@ -39,7 +36,7 @@ const ExpenseTotals = () => {
     const currentDate = moment();
     const currentWeek = currentDate.isoWeek();
 
-    const weekExpenses = expenses.filter(expense => {
+    const weekExpenses = expenses.expenses.filter(expense => {
       const expenseDate = moment(expense.createdAt);
       return (
         expenseDate.isoWeek() === currentWeek &&

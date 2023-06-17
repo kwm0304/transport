@@ -19,7 +19,6 @@ const RevenueTotal = () => {
         })
         const data = await response.json()
         dispatch1({ type: 'SET_EVENTS', payload: data })
-      
       } catch (error) {
         console.error('Error fetching events', error)
       }

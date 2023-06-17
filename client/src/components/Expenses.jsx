@@ -5,12 +5,12 @@ import { useAuthContext } from '../hooks/useAuth'
 import { useExpenseContext } from '../hooks/useExpenseContext'
 
 const Expenses = () => {
-  const { expenses , dispatch } = useExpenseContext()
+  const { expenses=[{}] , dispatch } = useExpenseContext()
   const { user } = useAuthContext()
   
   useEffect(() => {
     const fetchExpenses = async () => {
-      const response = await fetch('/api/expenses', {
+      const response = await fetch('/api/expenses/', {
         headers: {
           'Authorization': `Bearer ${user.token}`
         }

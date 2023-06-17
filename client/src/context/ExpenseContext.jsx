@@ -1,6 +1,7 @@
 import { createContext, useReducer } from 'react';
-export const ExpenseContext = createContext();
 import PropTypes from 'prop-types'
+
+export const ExpenseContext = createContext();
 
 export const expenseReducer = (state = { expenses: [] }, action) => {
   const newExpenses = Array.isArray(action.payload) ? action.payload : [action.payload]
@@ -26,7 +27,7 @@ export const expenseReducer = (state = { expenses: [] }, action) => {
 };
 
 export const ExpenseContextProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(expenseReducer, [])
+  const [state, dispatch] = useReducer(expenseReducer, {expenses:[{}]})
 
   return (
     <ExpenseContext.Provider value={{ ...state, dispatch }}>

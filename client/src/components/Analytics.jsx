@@ -66,7 +66,7 @@ const Analytics = () => {
 
   const getWeeklyExpenses = () => {
     const currentDate = moment();
-    const currentWeek = currentDate.week();
+    const currentWeek = currentDate.isoWeek()
 
     const weekExpenses = expenses.filter(expense => {
       const expenseDate = moment(expense.createdAt);
@@ -126,15 +126,16 @@ const Analytics = () => {
       return []
     }
     const currentDate = moment();
-    const currentWeek = currentDate.week();
+    const currentWeek = currentDate.isoWeek();
+    const currentYear = currentDate.year();
 
     const weekRevenues = events.events.filter(event => {
       const eventStart = moment(event.start);
       const eventEnd = moment(event.end);
       return (
-        eventStart.week() === currentWeek &&
+        eventStart.isoWeek() === currentWeek &&
         eventStart.year() === currentDate.year() &&
-        eventEnd.year() === currentDate.year()
+        eventEnd.year() === currentYear
       );
     });
 
@@ -242,13 +243,13 @@ const Analytics = () => {
                   <PieChart
                     className='px-4 pt-8'
                     labelStyle={defaultLabelStyle}
-                    label={customLabel}
+                    label={({ dataEntry }) => `${dataEntry.title}`}
                     data={getWeeklyExpenses().map(expense => ({
                       label: expense.type,
-                      
+                      toolTip: expense.type,
                       title: expense.type,
                       value: expense.total,
-                      color: '#' + Math.floor(Math.random() * 16777215).toString(16) // Random color for each expense type
+                      color: '#' + Math.floor(Math.random() * 16777215).toString(16) 
                     }))}
                   />
                 </div>
@@ -264,7 +265,7 @@ const Analytics = () => {
                       label: expense.type,
                       title: expense.type,
                       value: expense.total,
-                      color: '#' + Math.floor(Math.random() * 16777215).toString(16) // Random color for each expense type
+                      color: '#' + Math.floor(Math.random() * 16777215).toString(16) 
                     }))}
                   />
                 </div>
@@ -278,7 +279,7 @@ const Analytics = () => {
                     data={getYearlyExpenses().map(expense => ({
                       title: expense.type,
                       value: expense.total,
-                      color: '#' + Math.floor(Math.random() * 16777215).toString(16) // Random color for each expense type
+                      color: '#' + Math.floor(Math.random() * 16777215).toString(16) 
                     }))}
                   />
                 </div>
@@ -303,7 +304,8 @@ const Analytics = () => {
                     data={getWeeklyRevenuesByStore().map(revenue => ({
                       title: revenue.store,
                       value: revenue.amount,
-                      color: '#' + Math.floor(Math.random() * 16777215).toString(16) // Random color for each store
+                      color: '#' + Math.floor(Math.random() * 16777215).toString(16) 
+                      
                     }))}
                   />
                 </div>
@@ -317,7 +319,7 @@ const Analytics = () => {
                     data={getMonthlyRevenuesByStore().map(revenue => ({
                       title: revenue.store,
                       value: revenue.amount,
-                      color: '#' + Math.floor(Math.random() * 16777215).toString(16) // Random color for each store
+                      color: '#' + Math.floor(Math.random() * 16777215).toString(16) 
                     }))}
                   />
                 </div>
@@ -331,7 +333,7 @@ const Analytics = () => {
                     data={getYearlyRevenuesByStore().map(revenue => ({
                       title: revenue.store,
                       value: revenue.amount,
-                      color: '#' + Math.floor(Math.random() * 16777215).toString(16) // Random color for each store
+                      color: '#' + Math.floor(Math.random() * 16777215).toString(16) 
                     }))}
                   />
                 </div>

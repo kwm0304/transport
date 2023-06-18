@@ -1,6 +1,5 @@
 import { createContext, useReducer } from 'react';
 import PropTypes from 'prop-types'
-
 export const ExpenseContext = createContext();
 
 export const expenseReducer = (state = { expenses: [] }, action) => {
@@ -27,7 +26,7 @@ export const expenseReducer = (state = { expenses: [] }, action) => {
 };
 
 export const ExpenseContextProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(expenseReducer, {expenses:[{}]})
+  const [state, dispatch] = useReducer(expenseReducer, {expenses:[{}]});
 
   return (
     <ExpenseContext.Provider value={{ ...state, dispatch }}>
@@ -35,7 +34,3 @@ export const ExpenseContextProvider = ({ children }) => {
     </ExpenseContext.Provider>
   );
 };
-
-ExpenseContextProvider.propTypes = {
-  children: PropTypes.node.isRequired
-}

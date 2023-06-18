@@ -15,7 +15,6 @@ const ExpenseTotals = () => {
         }
       });
       const json = await response.json();
-      console.log('json', json)
       if (response.ok) {
         dispatch({ type: 'SET_EXPENSES', payload: json });
       }
@@ -24,7 +23,6 @@ const ExpenseTotals = () => {
       fetchExpenses();
     }
   }, [dispatch, user]);
-  console.log('expenses', expenses)
 
   const calculateTotal = (data, type) => {
     return data

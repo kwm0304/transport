@@ -15,7 +15,9 @@ const Expenses = () => {
           'Authorization': `Bearer ${user.token}`
         }
       })
+      console.log('expresponse', response)
       const json = await response.json()
+      console.log('expensesjson', json)
       if (response.ok) {
         dispatch({type: 'SET_EXPENSES', payload: json})
         console.log('Dispatched w/ payload', json)

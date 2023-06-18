@@ -202,24 +202,24 @@ const Analytics = () => {
     fill: 'black',
   }
 
-  const customLabel = ({dataEntry}) => {
+  const customLabel = ({ dataEntry }) => {
     const radius = 50;
     const angle = (dataEntry.startAngle + dataEntry.endAngle) / 2;
     const x = radius * Math.cos(angle);
     const y = radius * Math.sin(angle);
-
+  
     const validX = isNaN(x) ? 0 : x;
     const validY = isNaN(y) ? 0 : y;
-
+  
     const dx = 10;
     const dy = 5;
-
+  
     return (
       <text x={validX + dx} y={validY + dy} fill="black" textAnchor="middle">
         {dataEntry.title}
       </text>
-    )
-  }
+    );
+  };
   
   return (
     <>

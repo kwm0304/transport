@@ -32,12 +32,13 @@ const ExpenseTotals = () => {
 
   const calculateWeekTotal = () => {
     const currentDate = moment();
-    const currentWeek = currentDate.isoWeek();
+    const currentWeek = currentDate.week();
 
     const weekExpenses = expenses.filter(expense => {
       const expenseDate = moment(expense.createdAt);
       return (
-        expenseDate.isoWeek() === currentWeek &&
+        expenseDate.week() === currentWeek &&
+        expenseDate.month() === currentDate.month() &&
         expenseDate.year() === currentDate.year()
       );
     });
@@ -71,6 +72,7 @@ const ExpenseTotals = () => {
 
     return totals;
   };
+  console.log('week', calculateWeekTotal())
 
   const calculateYearTotal = () => {
     const currentDate = moment();

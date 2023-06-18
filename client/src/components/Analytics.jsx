@@ -34,7 +34,7 @@ const Analytics = () => {
 
   useEffect(() => {
     const fetchExpenses = async () => {
-      const response = await fetch('/api/expenses', {
+      const response = await fetch('api/expenses', {
         headers: {
           'Authorization': `Bearer ${user.token}`
         }

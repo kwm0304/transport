@@ -4,7 +4,7 @@ import { useExpenseContext } from '../hooks/useExpenseContext';
 import { useAuthContext } from '../hooks/useAuth';
 
 const ExpenseTotals = () => {
-  const { expenses, dispatch } = useExpenseContext();
+  const { expenses=[], dispatch } = useExpenseContext();
   const { user } = useAuthContext();
 
   useEffect(() => {
@@ -23,6 +23,8 @@ const ExpenseTotals = () => {
       fetchExpenses();
     }
   }, [dispatch, user]);
+
+  console.log('expenses', expenses)
 
   const calculateTotal = (data, type) => {
     return data

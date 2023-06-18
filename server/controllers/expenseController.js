@@ -2,7 +2,8 @@ const Expense = require('../models/expenseModel')
 const mongoose = require('mongoose')
 
 const getExpenses = async (req, res) => {
-  const user_id = req.user.user_id
+  
+  const user_id = req.user._id
   const expenses = await Expense.find({ user_id }).sort({ createdAt: -1})
   res.status(200).json(expenses)
 }
@@ -31,7 +32,7 @@ const createExpense = async (req, res) => {
     return res.status(400).json({ error: "Please fill out all fields", emptyFields})
   }
   try {
-    const user_id = req.params.user_id;
+    const user_id = req.params._id;
     const expense = await Expense.create({ amount, type,  user_id })
     res.status(200).json(expense)
   } catch (error) {
